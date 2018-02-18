@@ -426,7 +426,94 @@ public class KThread {
 	new KThread(new PingTest(1)).setName("forked thread").fork();
 	new PingTest(0).run();
     }
-
+	
+    public static void selfTest1() {
+	System.out.println("Running test case 1");
+	
+	
+	Runnable B = new Runnable() {
+		public void run() {
+			System.out.println("ThreadB has started!");
+		}
+	};
+	KThread ThreadB = new KThread(B);
+	Runnable A = new Runnable() {
+		public void run() {
+			ThreadB.join();
+			System.out.println("ThreadB has finished!");
+		}
+	};
+	KThread ThreadA = new KThread(A);
+	
+	ThreadA.fork();
+	ThreadB.fork();
+	ThreadA.join();
+	ThreadB.join();
+	
+	}
+	
+	public static void selfTest2() {
+		System.out.println("Running test case 2");
+	
+		Runnable B = new Runnable() {
+			public void run() {
+				System.out.println("ThreadB has finished!");
+			}
+		};
+		KThread ThreadB = new KThread(B);
+		Runnable A = new Runnable() {
+			public void run() {
+				ThreadB.join();
+				System.out.println("Joining ThreadB did nothing!");
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		ThreadB.fork();
+		ThreadA.fork();
+		ThreadA.join();
+		ThreadB.join();
+	}
+	
+	public static void selfTest3() {
+		System.out.println("Running test case 3");
+		LinkedList<KThread> L = new LinkedList<KThread>();
+	
+		Runnable A = new Runnable(){
+			public void run() {
+				L.getFirst().join();
+				System.out.println("ThreadA is not sleeping! The self join failed.");
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		L.add(ThreadA);
+		ThreadA.fork();
+		ThreadA.join();
+	}
+	
+	public static void selfTest4() {
+		System.out.println("Running test case 4");
+		LinkedList<KThread> L = new LinkedList<KThread>();
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				L.getFirst().join();
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		
+		Runnable B = new Runnable(){
+			public void run() {
+				ThreadA.join();
+				System.out.println("Thread B is not sleeping! The cyclical join failed!");
+			}
+		};
+		KThread ThreadB = new KThread(B);
+		L.add(ThreadB);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadA.join();
+		ThreadB.join();
+	}
     private static final char dbgThread = 't';
 
     /**
