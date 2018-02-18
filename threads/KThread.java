@@ -538,6 +538,8 @@ public class KThread {
     private String name = "(unnamed thread)";
     private Runnable target;
     private TCB tcb;
+    private LinkedList<KThread> joinList = new LinkedList<KThread>();
+    private LinkedList<Integer> joinID = new LinkedList<Integer>();
 
     /**
      * Unique identifer for this thread. Used to deterministically compare
