@@ -79,7 +79,7 @@ public class Alarm {
     	private long wakeTime;
 	
 	/**
-	* A constructor for the inner class threadStorage, initializes variables wakeTime & currentThread.
+	* A constructor for the inner class threadStorage, initializes variables wakeTime and  currentThread.
 	*
         * @param currentThread		the stored thread.
         * 	 wakeTime		the stored threads wake time.	
