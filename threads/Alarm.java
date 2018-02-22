@@ -101,4 +101,126 @@ public class Alarm {
     		else { return 0; }
     	}
     }
+	
+	public static void selfTest1() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running test case 1: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(750);
+				if (Machine.timer().getTime() >= (currrent + 750)){
+					System.out.println("Case #1 Success!");
+					}
+				else 
+					System.out.println("Case #1 Failure!");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		ThreadA.fork();
+		//ThreadA.join();
+	}
+	
+	public static void selfTest2() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running test case 2: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(0);
+				alarm.waitUntil(-42);
+				if (Machine.timer().getTime() >= (currrent + 1000)){
+					System.out.println("Case #2 Success!");
+					}
+				else 
+					System.out.println("Case #2 Failure!");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		ThreadA.fork();
+		//ThreadA.join();
+	}
+	
+	public static void selfTest3() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running test case 3: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(750);
+				if (Machine.timer().getTime() >= (currrent + 750)){
+					System.out.println("Case #3: ThreadA Success!");
+					}
+				else {
+					System.out.println("Case #3: ThreadA Failure!");
+					}
+				System.out.println("ThreadA: This Should Display First");
+				}
+			};
+		
+		Runnable B = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(2500);
+				if (Machine.timer().getTime() >= (currrent + 2500)){
+					System.out.println("Case #3: ThreadB Success!");
+					}
+				else {
+					System.out.println("Case #3: ThreadB Failure!");
+					}
+				System.out.println("ThreadB: This Should Display Last");
+				}
+			};
+		
+		Runnable C = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(1500);
+				if (Machine.timer().getTime() >= (currrent + 1500)){
+					System.out.println("Case #3: ThreadC Success!");
+					}
+				else {
+					System.out.println("Case #3: ThreadC Failure!");
+					}
+				System.out.println("ThreadC: This Should Display Second");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		KThread ThreadB = new KThread(B);
+		KThread ThreadC = new KThread(C);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadC.fork();
+		//ThreadA.join();
+		//ThreadB.join();
+		//ThreadC.join();
+	}
+	
+		public static void selfTest4() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running test case 4: ");
+		KThread ThreadA;
+			
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(750);
+				System.out.println("Hello?");
+				ThreadA.fork();
+				alarm.waitUntil(2500);
+				System.out.println("Stop Copying Me!");
+				alarm.waitUntil(7500);
+				System.out.println("Im Telling On You!!");
+			};
+		
+		ThreadA = new KThread(A);
+		ThreadA.fork();
+		//ThreadA.join();
+	}
 }
