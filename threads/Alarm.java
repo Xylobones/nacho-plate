@@ -206,10 +206,10 @@ public class Alarm {
 		Alarm alarm = new Alarm();
 		System.out.println("Running test case 4: ");
 		KThread ThreadA;
-			
+		
+		//The thread should display hello, hello, stop copying me!, stop copying me!, Im Telling On You!!...
 		Runnable A = new Runnable() {
 			public void run() {
-				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
 				System.out.println("Hello?");
 				ThreadA.fork();
