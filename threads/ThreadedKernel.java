@@ -11,6 +11,7 @@ public class ThreadedKernel extends Kernel {
      */
     public ThreadedKernel() {
 	super();
+	
     }
 
     /**
@@ -46,21 +47,26 @@ public class ThreadedKernel extends Kernel {
      * tests here.
      */	
     public void selfTest() {
-	KThread.selfTest();
-	KThread.selfTest1();
-	KThread.selfTest2();
-	KThread.selfTest3();
-	KThread.selfTest4();
-	Condition2.selfTest1();
-	Condition2.selfTest2();
-	Condition2.selfTest3();
-	Condition2.selfTest4();
-	Alarm.selfTest1();
-	Alarm.selfTest2();
-	Alarm.selfTest3();
-	Alarm.selfTest4();
-	Semaphore.selfTest();
-	SynchList.selfTest();
+    	KThread.selfTest();
+    	KThread.selfTest1();
+    	KThread.selfTest2();
+    	KThread.selfTest3();
+    	KThread.selfTest4();
+    	Condition2.selfTest1();
+    	Condition2.selfTest2();
+    	Condition2.selfTest3();
+    	Condition2.selfTest4();
+    	Alarm.selfTest1();
+    	Alarm.selfTest2();
+    	Alarm.selfTest3();
+    	Alarm.selfTest4();
+    	Communicator.selfTest1();
+    	Communicator.selfTest2();
+    	Communicator.selfTest3();
+    	Communicator.selfTest4();
+    	Communicator.selfTest5();
+    	Semaphore.selfTest();
+    	SynchList.selfTest();
 	if (Machine.bank() != null) {
 	    ElevatorBank.selfTest();
 	}
