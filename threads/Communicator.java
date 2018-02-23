@@ -11,7 +11,7 @@ import nachos.machine.*;
  */
 public class Communicator {
 	
-	private static Lock lock;				//lock variable
+	private Lock lock;				//lock variable
 	private static Condition2 listenerReceiving;
 	private static Condition2 speakerSending;
 	private Integer wordTransfer;
@@ -45,10 +45,10 @@ public class Communicator {
     	//speaker to sleep atomically.
     		while (listener == 0 || wordTransfer != null){
     			Machine.interrupt().disable();
+				listenerReceiving.wake();
     			speakerSending.sleep();
-    			Machine.interrupt().enable();
     		}
-    	lock.acquire();
+		Machine.interrupt().enable();
     	wordTransfer = new Integer(word); //unboxing the Integer.
     	listenerReceiving.wake();
     	lock.release();
@@ -69,8 +69,8 @@ public class Communicator {
     			Machine.interrupt().disable();
     			speakerSending.wake();
     			listenerReceiving.sleep();
-    			Machine.interrupt().enable();
     		}
+		Machine.interrupt().enable();
     	int message = wordTransfer.intValue(); //unboxing the Integer.
     	listener--; 	//reduce the amount of listeners in the queue
     	wordTransfer = null;
@@ -87,29 +87,23 @@ public class Communicator {
      */
     public static void selfTest1(){ 
     	
-		System.out.println("Running condition test case 1 of 5");
+		System.out.println("Running communicator test case 1 of 5");
     	final Communicator communicator = new Communicator();	
 		
     	Runnable A = new Runnable(){
     		
     		public void run(){
-    			lock.acquire();
     			System.out.println("Speaker Thread speaks to listener. Awaiting Verification!");
     			communicator.speak(5);
-    			speakerSending.sleep();
     			System.out.println("Yup! Speaker Thread has finished speaking.");
-    			lock.release();
     		}
     	};
     	
     	Runnable B = new Runnable(){
     		public void run(){
-    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker. Please wait for verification.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received!!!! Is this your word?: " + x);
-    			lock.release();
     		}
     	};
     	
@@ -129,35 +123,29 @@ public class Communicator {
      * the waiting queue. 
      */
     public static void selfTest2(){
-    	System.out.println("Running communicator test case 2 of 5");
+    	System.out.println("Running communicator test case 2 of 5");	
     		final Communicator communicator = new Communicator();	
 		
     		Runnable A = new Runnable(){
     			public void run(){
-    				lock.acquire();
     				System.out.println("Speaker Thread speaking to listener.");
     				communicator.speak(5);
-    				speakerSending.sleep();
-    				System.out.println("Speaker Thread finished speaking, waiting on responce.");
-    				lock.release();				
+    				System.out.println("Speaker Thread finished speaking.");			
     			}
     		};
     		
         	Runnable B = new Runnable(){
         		public void run(){
-        			lock.acquire();
         			System.out.println("Listener receiving word spoken by speaker.");
         			int x = communicator.listen();
-        			listenerReceiving.sleep();
-        			//here would print "Done" if there was another thread in the queue.
-        			lock.release();
+					System.out.println("Listener received!!!! Is this your word?: " + x);
         		}
         	};
     		
         	
         	KThread thread1 = new KThread(A); //speaker
         	thread1.fork();
-        	thread1.join();
+        	//thread1.join();
         	  
     }
     
@@ -173,34 +161,25 @@ public class Communicator {
 	
 		Runnable A = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread A speaking to listener.");
 				communicator.speak(5);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread A finished speaking, waiting on responce.");			
 			}
 		};
 		
 		Runnable B = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread B speaking to listener.");
 				communicator.speak(6);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread B finished speaking, waiting on responce.");			
 			}
 		};
 		
 		Runnable C = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread C speaking to listener.");
 				communicator.speak(7);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread C finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread C finished speaking, waiting on responce.");			
 			}
 		};
     	
@@ -210,9 +189,9 @@ public class Communicator {
     	thread1.fork();
     	thread2.fork();
     	thread3.fork();
-    	thread1.join();
-    	thread2.join();
-    	thread3.join();
+    	//thread1.join();
+    	//thread2.join();
+    	//thread3.join();
     	
     
     	
@@ -225,38 +204,30 @@ public class Communicator {
      */
     public static void selfTest4(){
     	System.out.println("Running communicator test case 4 of 5");
-    	final Communicator communicator = new Communicator();	
+    
+		final Communicator communicator = new Communicator();	
 	
 		Runnable A = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread A speaking to listener.");
 				communicator.speak(5);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread A finished speaking.");			
 			}
 		};
 
 		Runnable B = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread B speaking to listener.");
 				communicator.speak(5);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread B finished speaking.");			
 			}
 		};
     	
     	Runnable C = new Runnable(){ //listener
     		public void run(){
-    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			lock.release();
     		}
     	};
     	
@@ -267,8 +238,8 @@ public class Communicator {
     	thread2.fork();
     	thread3.fork();
     	thread1.join();
-    	thread2.fork();
-    	thread3.fork();
+    	//thread2.join();
+    	thread3.join();
     }
     
     /**
@@ -280,104 +251,77 @@ public class Communicator {
 		
 		Runnable A = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread A speaking to listener.");
 				communicator.speak(1);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread A finished speaking.");			
 			}
 		};
 
 		Runnable B = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread B speaking to listener.");
 				communicator.speak(2);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread B finished speaking.");				
 			}
 		};
 
     	Runnable C = new Runnable(){ //listener
     		public void run(){
-    			lock.acquire();
-    			System.out.println("Listener receiving word spoken by speaker.");
+    			System.out.println("Listener Thread C receiving word spoken by speaker.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			lock.release();
     		}
     	};
 		
     	Runnable D = new Runnable(){ //listener
     		public void run(){
-    			lock.acquire();
-    			System.out.println("Listener receiving word spoken by speaker.");
+    			System.out.println("Listener Thread D receiving word spoken by speaker.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			lock.release();
     		}
     	};
     	
     	Runnable E = new Runnable(){ //listener
     		public void run(){
-    			lock.acquire();
-    			System.out.println("Listener receiving word spoken by speaker.");
+    			System.out.println("Listener Thread E receiving word spoken by speaker.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			lock.release();
     		}
     	};
     	
 		Runnable F = new Runnable(){
 			public void run(){
-				lock.acquire();
 				System.out.println("Speaker Thread F speaking to listener.");
 				communicator.speak(3);
-				speakerSending.sleep();
-				System.out.println("Speaker Thread F finished speaking, waiting on responce.");
-				lock.release();				
+				System.out.println("Speaker Thread F finished speaking.");			
 			}
 		};
     	
     	Runnable G = new Runnable(){ //listener
     		public void run(){
-    			lock.acquire();
-    			System.out.println("Listener receiving word spoken by speaker.");
+    			System.out.println("Listener Thread G receiving word spoken by speaker.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			lock.release();
     		}
     	};
     	
     	Runnable H = new Runnable(){ //listener
     		public void run(){
-    			lock.acquire();
-    			System.out.println("Listener receiving word spoken by speaker.");
+    			System.out.println("Listener Thread H receiving word spoken by speaker.");
     			int x = communicator.listen();
-    			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			lock.release();
     		
-    	}
-    };
+			}
+		};
     
     
-	Runnable I = new Runnable(){
-		public void run(){
-			lock.acquire();
-			System.out.println("Speaker Thread F speaking to listener.");
-			communicator.speak(3);
-			speakerSending.sleep();
-			System.out.println("Speaker Thread F finished speaking, waiting on responce.");
-			lock.release();				
-		}
-	};
+		Runnable I = new Runnable(){
+			public void run(){
+				System.out.println("Speaker Thread I speaking to listener.");
+				communicator.speak(4);
+				System.out.println("Speaker Thread I finished speaking.");			
+			}
+		};
     
 	KThread thread1 = new KThread(A); //speaker
 	KThread thread2 = new KThread(B); //speaker
@@ -398,14 +342,14 @@ public class Communicator {
 	thread8.fork();
 	thread9.fork();
 	thread1.join();
-	thread2.fork();
-	thread3.fork();
-	thread4.fork();
-	thread5.fork();
-	thread6.fork();
-	thread7.fork();
-	thread8.fork();
-	thread9.fork();
+	thread2.join();
+	thread3.join();
+	thread4.join();
+	thread5.join();
+	thread6.join();
+	thread7.join();
+	thread8.join();
+	thread9.join();
 	
 }
 }
