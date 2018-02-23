@@ -61,10 +61,10 @@ public class ThreadedKernel extends Kernel {
     	Alarm.selfTest3();
     	Alarm.selfTest4();
     	Communicator.selfTest1();
-    	Communicator.selfTest2();
-    	Communicator.selfTest3();
+    	//Communicator.selfTest2();
+    	//Communicator.selfTest3();
     	Communicator.selfTest4();
-    	Communicator.selfTest5();
+    	//Communicator.selfTest5();
     	Semaphore.selfTest();
     	SynchList.selfTest();
 	if (Machine.bank() != null) {
