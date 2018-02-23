@@ -129,7 +129,7 @@ public class Communicator {
      * one speaker with no listener, as well as one listener with no speaker in
      * the waiting queue. 
      */
-    public void selfTest2(){
+    public static void selfTest2(){
     	System.out.println("Running communicator test case 2 of 5");	
     		final Lock testLock = new Lock();
     		final Communicator communicator = new Communicator();	
@@ -169,7 +169,7 @@ public class Communicator {
      * their duties, and will be added to a waiting list until there is a thread of
      * the respective origin.
      */
-    public void selfTest3(){
+    public static void selfTest3(){
     	System.out.println("Running communicator test case 3 of 5");
 		final Lock testLock = new Lock();
 		final Communicator communicator = new Communicator();	
@@ -226,7 +226,7 @@ public class Communicator {
      * The effects will be that the first instance of a communication will be printed out
      * and the rest will be waiting for a response.  
      */
-    public void selfTest4(){
+    public static void selfTest4(){
     	System.out.println("Running communicator test case 4 of 5");
     
 		final Lock testLock = new Lock();
@@ -279,7 +279,7 @@ public class Communicator {
     /**
      * This case will test a real life situation. 
      */
-    public void selfTest5(){
+    public static void selfTest5(){
     	System.out.println("Running communicator test case 5 of 5");
 		final Lock testLock = new Lock();
 		final Communicator communicator = new Communicator();
