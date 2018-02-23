@@ -66,7 +66,7 @@ public class Alarm {
 	Machine.interrupt().disable();
 	// Store the thread & its wake time in the priority queue and put the thread to sleep.
 	waitingQueue.add(threadStorage);
-	thread.sleep(KThread.currentThread());
+	KThread.currentThread().sleep();
 	Machine.interrupt().enable();
     }
      /**
@@ -84,7 +84,7 @@ public class Alarm {
         * @param currentThread		the stored thread.
         * 	 wakeTime		the stored threads wake time.	
 	*/  
-    	public ThreadTime (KThread currentThread, long wakeTime){
+    	public threadStorage (KThread currentThread, long wakeTime){
     		this.currentThread = currentThread;
     		this.wakeTime = wakeTime;
     	}
@@ -104,13 +104,13 @@ public class Alarm {
 	
 	public static void selfTest1() {
 		Alarm alarm = new Alarm();
-		System.out.println("Running test case 1: ");
+		System.out.println("Running alarm test case 1: ");
 		
 		Runnable A = new Runnable() {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
-				if (Machine.timer().getTime() >= (currrent + 750)){
+				if (Machine.timer().getTime() >= (current + 750)){
 					System.out.println("Case #1 Success!");
 					}
 				else 
@@ -120,19 +120,19 @@ public class Alarm {
 		
 		KThread ThreadA = new KThread(A);
 		ThreadA.fork();
-		//ThreadA.join();
+		ThreadA.join();
 	}
 	
 	public static void selfTest2() {
 		Alarm alarm = new Alarm();
-		System.out.println("Running test case 2: ");
+		System.out.println("Running alarm test case 2: ");
 		
 		Runnable A = new Runnable() {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(0);
 				alarm.waitUntil(-42);
-				if (Machine.timer().getTime() >= (currrent + 1000)){
+				if (Machine.timer().getTime() <= (current + 1000)){
 					System.out.println("Case #2 Success!");
 					}
 				else 
@@ -142,18 +142,18 @@ public class Alarm {
 		
 		KThread ThreadA = new KThread(A);
 		ThreadA.fork();
-		//ThreadA.join();
+		ThreadA.join();
 	}
 	
 	public static void selfTest3() {
 		Alarm alarm = new Alarm();
-		System.out.println("Running test case 3: ");
+		System.out.println("Running alarm test case 3: ");
 		
 		Runnable A = new Runnable() {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
-				if (Machine.timer().getTime() >= (currrent + 750)){
+				if (Machine.timer().getTime() >= (current + 750)){
 					System.out.println("Case #3: ThreadA Success!");
 					}
 				else {
@@ -167,7 +167,7 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(2500);
-				if (Machine.timer().getTime() >= (currrent + 2500)){
+				if (Machine.timer().getTime() >= (current + 2500)){
 					System.out.println("Case #3: ThreadB Success!");
 					}
 				else {
@@ -181,7 +181,7 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(1500);
-				if (Machine.timer().getTime() >= (currrent + 1500)){
+				if (Machine.timer().getTime() >= (current + 1500)){
 					System.out.println("Case #3: ThreadC Success!");
 					}
 				else {
@@ -197,30 +197,31 @@ public class Alarm {
 		ThreadA.fork();
 		ThreadB.fork();
 		ThreadC.fork();
-		//ThreadA.join();
-		//ThreadB.join();
-		//ThreadC.join();
+		ThreadA.join();
+		ThreadB.join();
+		ThreadC.join();
 	}
 	
 		public static void selfTest4() {
 		Alarm alarm = new Alarm();
-		System.out.println("Running test case 4: ");
-		KThread ThreadA;
+		System.out.println("Running alarm test case 4: ");
 		
 		//The thread should display hello, hello, stop copying me!, stop copying me!, Im Telling On You!!...
 		Runnable A = new Runnable() {
 			public void run() {
 				alarm.waitUntil(750);
 				System.out.println("Hello?");
-				ThreadA.fork();
 				alarm.waitUntil(2500);
 				System.out.println("Stop Copying Me!");
 				alarm.waitUntil(7500);
 				System.out.println("Im Telling On You!!");
 			};
-		
-		ThreadA = new KThread(A);
+		};
+		KThread ThreadA = new KThread(A);
+		KThread ThreadB = new KThread(A);
 		ThreadA.fork();
-		//ThreadA.join();
+		ThreadB.fork();
+		ThreadA.join();
 	}
 }
+
