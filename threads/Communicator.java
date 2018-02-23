@@ -11,7 +11,7 @@ import nachos.machine.*;
  */
 public class Communicator {
 	
-	private Lock lock;				//lock variable
+	private static Lock lock;				//lock variable
 	private static Condition2 listenerReceiving;
 	private static Condition2 speakerSending;
 	private Integer wordTransfer;
@@ -88,29 +88,28 @@ public class Communicator {
     public static void selfTest1(){ 
     	
 		System.out.println("Running condition test case 1 of 5");
-		final Lock testLock = new Lock();
     	final Communicator communicator = new Communicator();	
 		
     	Runnable A = new Runnable(){
     		
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Speaker Thread speaks to listener. Awaiting Verification!");
     			communicator.speak(5);
     			speakerSending.sleep();
     			System.out.println("Yup! Speaker Thread has finished speaking.");
-    			testLock.release();
+    			lock.release();
     		}
     	};
     	
     	Runnable B = new Runnable(){
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker. Please wait for verification.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received!!!! Is this your word?: " + x);
-    			testLock.release();
+    			lock.release();
     		}
     	};
     	
@@ -130,29 +129,28 @@ public class Communicator {
      * the waiting queue. 
      */
     public static void selfTest2(){
-    	System.out.println("Running communicator test case 2 of 5");	
-    		final Lock testLock = new Lock();
+    	System.out.println("Running communicator test case 2 of 5");
     		final Communicator communicator = new Communicator();	
 		
     		Runnable A = new Runnable(){
     			public void run(){
-    				testLock.acquire();
+    				lock.acquire();
     				System.out.println("Speaker Thread speaking to listener.");
     				communicator.speak(5);
     				speakerSending.sleep();
     				System.out.println("Speaker Thread finished speaking, waiting on responce.");
-    				testLock.release();				
+    				lock.release();				
     			}
     		};
     		
         	Runnable B = new Runnable(){
         		public void run(){
-        			testLock.acquire();
+        			lock.acquire();
         			System.out.println("Listener receiving word spoken by speaker.");
         			int x = communicator.listen();
         			listenerReceiving.sleep();
         			//here would print "Done" if there was another thread in the queue.
-        			testLock.release();
+        			lock.release();
         		}
         	};
     		
@@ -171,39 +169,38 @@ public class Communicator {
      */
     public static void selfTest3(){
     	System.out.println("Running communicator test case 3 of 5");
-		final Lock testLock = new Lock();
 		final Communicator communicator = new Communicator();	
 	
 		Runnable A = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread A speaking to listener.");
 				communicator.speak(5);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
 		
 		Runnable B = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread B speaking to listener.");
 				communicator.speak(6);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
 		
 		Runnable C = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread C speaking to listener.");
 				communicator.speak(7);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread C finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
     	
@@ -228,40 +225,38 @@ public class Communicator {
      */
     public static void selfTest4(){
     	System.out.println("Running communicator test case 4 of 5");
-    
-		final Lock testLock = new Lock();
-		final Communicator communicator = new Communicator();	
+    	final Communicator communicator = new Communicator();	
 	
 		Runnable A = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread A speaking to listener.");
 				communicator.speak(5);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
 
 		Runnable B = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread B speaking to listener.");
 				communicator.speak(5);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
     	
     	Runnable C = new Runnable(){ //listener
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			testLock.release();
+    			lock.release();
     		}
     	};
     	
@@ -281,94 +276,93 @@ public class Communicator {
      */
     public static void selfTest5(){
     	System.out.println("Running communicator test case 5 of 5");
-		final Lock testLock = new Lock();
 		final Communicator communicator = new Communicator();
 		
 		Runnable A = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread A speaking to listener.");
 				communicator.speak(1);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
 
 		Runnable B = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread B speaking to listener.");
 				communicator.speak(2);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
 
     	Runnable C = new Runnable(){ //listener
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			testLock.release();
+    			lock.release();
     		}
     	};
 		
     	Runnable D = new Runnable(){ //listener
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			testLock.release();
+    			lock.release();
     		}
     	};
     	
     	Runnable E = new Runnable(){ //listener
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			testLock.release();
+    			lock.release();
     		}
     	};
     	
 		Runnable F = new Runnable(){
 			public void run(){
-				testLock.acquire();
+				lock.acquire();
 				System.out.println("Speaker Thread F speaking to listener.");
 				communicator.speak(3);
 				speakerSending.sleep();
 				System.out.println("Speaker Thread F finished speaking, waiting on responce.");
-				testLock.release();				
+				lock.release();				
 			}
 		};
     	
     	Runnable G = new Runnable(){ //listener
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			testLock.release();
+    			lock.release();
     		}
     	};
     	
     	Runnable H = new Runnable(){ //listener
     		public void run(){
-    			testLock.acquire();
+    			lock.acquire();
     			System.out.println("Listener receiving word spoken by speaker.");
     			int x = communicator.listen();
     			listenerReceiving.sleep();
     			System.out.println("Listener received: " + x);
-    			testLock.release();
+    			lock.release();
     		
     	}
     };
@@ -376,12 +370,12 @@ public class Communicator {
     
 	Runnable I = new Runnable(){
 		public void run(){
-			testLock.acquire();
+			lock.acquire();
 			System.out.println("Speaker Thread F speaking to listener.");
 			communicator.speak(3);
 			speakerSending.sleep();
 			System.out.println("Speaker Thread F finished speaking, waiting on responce.");
-			testLock.release();				
+			lock.release();				
 		}
 	};
     
