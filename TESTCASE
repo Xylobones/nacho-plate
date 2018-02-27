@@ -1,8 +1,8 @@
-Task I
+TASK I
 
-Task II
+TASK II
 
-TASK III - ALARM
+TASK III - THE ALARM CLASS
 Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
 Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user, 
 having input already preassigned to any necessary values.
@@ -225,6 +225,6 @@ Stop Copying Me!
 Im Telling On You!!
 Im Telling On You!!
 
-Task IV
+TASK IV
 
 TASK V
