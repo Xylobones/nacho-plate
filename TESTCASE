@@ -39,7 +39,8 @@ ThreadB has finished!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-selfTest2() ensures that joining a finished thread does not cause the joiner to sleep. The joining thread should immediately display a message after the join attempt.
+selfTest2() ensures that joining a finished thread does not cause the joiner to sleep. The joining thread should immediately display
+a message after the join attempt.
 
 	public static void selfTest2() {
 		System.out.println("Running test case 2");
@@ -94,7 +95,8 @@ ThreadA is not sleeping! The self join failed.
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-selfTest4() tests to see if cyclical joining fails as it should. ThreadA will join ThreadB, and then ThreadB will attempt to join ThreadA and immediately display a message stating that the join failed.
+selfTest4() tests to see if cyclical joining fails as it should. ThreadA will join ThreadB, and then ThreadB will attempt to join
+ThreadA and immediately display a message stating that the join failed.
 
 	public static void selfTest4() {
 		System.out.println("Running test case 4");
