@@ -5,18 +5,19 @@ import java.util.LinkedList;
 
 public class ReactWater{
 	
-	private KThreadList AtomList;
+	private LinkedList<KThread> AtomList;
 	private int oCount;
 	private int hCount;
 	private final int sentByHydrogen;
 	private final int sentByOxygen;
 	private Lock lock;
+	private char type;
 	
     /** 
      *   Constructor of ReactWater
      **/
     public ReactWater() {
-    	AtomList=new KThreadList;
+    	AtomList=new LinkedList<KThread>();
     	oCount=0;
     	hCount=0;
     	sentByHydrogen=0;
@@ -32,14 +33,15 @@ public class ReactWater{
      **/ 
     public void hReady() {
     	lock.acquire();
+    	type='H';
     	hCount++;
-    	If(hCount>=2 and oCount>=1){
+    	if(hCount>=2 && oCount>=1){
     		lock.release();
-    		makeWater(sentByHydrogen);
-    		hcount--;
+    		MakeWater(sentByHydrogen);
+    		hCount--;
     	}
     	else{
-    		System.out.println("Hydrogen ready and waiting.")//debug message
+    		System.out.println("Hydrogen ready and waiting.");//debug message
     		lock.release();
     		KThread.sleep();
     	}
@@ -52,14 +54,15 @@ public class ReactWater{
      **/ 
     public void oReady() {
     	lock.acquire();
+    	type='O';
     	oCount++;
-    	if(hCount>=2 and oCount>=1){
+    	if(hCount>=2 && oCount>=1){
     		lock.release();
-    		makeWater(sentByOxygen);
+    		MakeWater(sentByOxygen);
     		oCount--;
     	}
     	else{
-    		System.out.println("Oxygen ready and waiting.")//debug message
+    		System.out.println("Oxygen ready and waiting.");//debug message
     		lock.release();
     		KThread.sleep();
     	}
@@ -68,25 +71,27 @@ public class ReactWater{
     /** 
      *   Print out the message of "water was made!".
      **/
-    public void Makewater(int sentBy) {
-    	System.out.println("Enough atoms for water to be made.")//debug message
+    public void MakeWater(int sentBy) {
+    	System.out.println("Enough atoms for water to be made.");//debug message
     	int HydrogenNeeded=2;
     	int OxygenNeeded=1;
+    	int Hreturned=0;
+    	int Oreturned=0;
     	if (sentBy==sentByHydrogen)
     		HydrogenNeeded--;
     	if (sentBy==sentByOxygen)
     		OxygenNeeded--;
     	int i=0;
     	while((Hreturned < HydrogenNeeded || Oreturned < OxygenNeeded) 
-    		 && i<AtomList.size)
+    		 && i<AtomList.size())
     		lock.acquire();
-    		if (atom.type == H && Hreturned < HydrogenNeeded){
-    			AtomList[i].finish();
+    		if (type == 'H' && Hreturned < HydrogenNeeded){
+    			AtomList.get(i).finish();
     			hCount--;
     			Hreturned++;
     		}
-    		if (atom.type == O && Oreturned < OxygenNeeded){
-    			AtomList[i].finish();
+    		if (type == 'O' && Oreturned < OxygenNeeded){
+    			AtomList.get(i).finish();
     			oCount--;
     			Oreturned++;
     		}
@@ -186,7 +191,7 @@ public class ReactWater{
     	KThread thread8 = new KThread(B);
     	KThread thread9 = new KThread(A);
     	KThread thread10 = new KThread(A);
-    	KThread threa111 = new KThread(B);
+    	KThread thread11 = new KThread(B);
     	KThread thread12 = new KThread(A);
     	KThread thread13 = new KThread(A);
     	KThread thread14 = new KThread(B);
