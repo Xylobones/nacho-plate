@@ -5,23 +5,20 @@ import java.util.LinkedList;
 
 public class ReactWater{
 	
-	private LinkedList<KThread> AtomList;
+	private LinkedList<KThread> HydrogenList;
+	private LinkedList<KThread> OxygenList;
 	private int oCount;
 	private int hCount;
-	private final int sentByHydrogen;
-	private final int sentByOxygen;
 	private Lock lock;
-	private char type;
 	
     /** 
      *   Constructor of ReactWater
      **/
     public ReactWater() {
-    	AtomList=new LinkedList<KThread>();
+    	HydrogenList=new LinkedList<KThread>();
+		OxygenList=new LinkedList<KThread>();
     	oCount=0;
     	hCount=0;
-    	sentByHydrogen=0;
-    	sentByOxygen=1;
     	lock=new Lock();
 
     } // end of ReactWater()
@@ -32,24 +29,10 @@ public class ReactWater{
      *   H element wait in line. 
      **/ 
     public void hReady() {
-    	Machine.interrupt().disable();
-    	lock.acquire();
-    	type='H';
     	hCount++;
-    	if(hCount>=2 && oCount>=1){
-    		lock.release();
-    		MakeWater(sentByHydrogen);
-			System.out.println("hCount (make):"+hCount);
-    		hCount--;
-    	}
-    	else{
-    		System.out.println("Hydrogen ready and waiting.");//debug message
-    		AtomList.add(KThread.currentThread());
-			System.out.println("hCount:"+hCount);
-    		lock.release();    		
-    		KThread.sleep();
-    	}
-    	Machine.interrupt().enable();
+		HydrogenList.add(KThread.currentThread());
+		MakeWater();
+    	
     } // end of hReady()
  
     /** 
@@ -58,65 +41,24 @@ public class ReactWater{
      *   wait in line. 
      **/ 
     public void oReady() {
-    	Machine.interrupt().disable();
-    	lock.acquire();
-    	type='O';
     	oCount++;
-    	if(hCount>=2 && oCount>=1){
-    		lock.release();
-    		MakeWater(sentByOxygen);
-			System.out.println("oCount (make):"+oCount);
-    		oCount--;
-    	}
-    	else{
-    		System.out.println("Oxygen ready and waiting.");//debug message
-    		AtomList.add(KThread.currentThread());
-			System.out.println("oCount:"+oCount);
-			lock.release();
-    		KThread.sleep();
-    	}
-    	Machine.interrupt().enable();
+		OxygenList.add(KThread.currentThread());
+		MakeWater();
     } // end of oReady()
     
     /** 
      *   Print out the message of "water was made!".
      **/
-    public void MakeWater(int sentBy) {
-    	//Machine.interrupt().disable();
-    	System.out.println("Enough atoms for water to be made.");//debug message
-    	int HydrogenNeeded=2;
-    	int OxygenNeeded=1;
-    	int Hreturned=0;
-    	int Oreturned=0;
-    	if (sentBy==sentByHydrogen)
-    		HydrogenNeeded--;
-    	if (sentBy==sentByOxygen)
-    		OxygenNeeded--;
-    	int i=0;
-    			System.out.println("List size: "+AtomList.size());
-    			System.out.println("hCount making:"+hCount);
-    			System.out.println("oCount making:"+oCount);
-    	while((Hreturned < HydrogenNeeded || Oreturned < OxygenNeeded)
-    		 && i<AtomList.size()){ 
-    		lock.acquire();
-    		if (type == 'H' && Hreturned < HydrogenNeeded){
-    			AtomList.get(i).finish();
-    			AtomList.remove(i);
-    			hCount--;
-    			Hreturned++;
-    		}
-    		if (type == 'O' && Oreturned < OxygenNeeded){
-    			AtomList.get(i).finish();
-    			AtomList.remove(i);
-    			oCount--;
-    			Oreturned++;
-    		}
-    		lock.release();
-    		i++;
-    	}
-    	System.out.println("Water was made.");
-    	//Machine.interrupt().enable();
-
+    public void MakeWater() {
+    	while(hCount >= 2 && oCount >= 1){
+			System.out.println("Enough atoms for water to be made.");//debug message
+			hCount -= 2;
+			oCount--;
+			HydrogenList.removeFirst();
+			HydrogenList.removeFirst();
+			OxygenList.removeFirst();
+			System.out.println("Water was made.");
+		}	
     } // end of Makewater()
     
     /**
