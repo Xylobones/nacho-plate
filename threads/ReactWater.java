@@ -44,7 +44,7 @@ public class ReactWater{
     	}
     	else{
     		System.out.println("Hydrogen ready and waiting.");//debug message
-
+    		AtomList.add(KThread.currentThread());
 			System.out.println("hCount:"+hCount);
     		lock.release();    		
     		KThread.sleep();
@@ -70,7 +70,7 @@ public class ReactWater{
     	}
     	else{
     		System.out.println("Oxygen ready and waiting.");//debug message
-
+    		AtomList.add(KThread.currentThread());
 			System.out.println("oCount:"+oCount);
 			lock.release();
     		KThread.sleep();
@@ -94,16 +94,20 @@ public class ReactWater{
     		OxygenNeeded--;
     	int i=0;
     			System.out.println("List size: "+AtomList.size());
+    			System.out.println("hCount making:"+hCount);
+    			System.out.println("oCount making:"+oCount);
     	while((Hreturned < HydrogenNeeded || Oreturned < OxygenNeeded)
     		 && i<AtomList.size()){ 
     		lock.acquire();
     		if (type == 'H' && Hreturned < HydrogenNeeded){
     			AtomList.get(i).finish();
+    			AtomList.remove(i);
     			hCount--;
     			Hreturned++;
     		}
     		if (type == 'O' && Oreturned < OxygenNeeded){
     			AtomList.get(i).finish();
+    			AtomList.remove(i);
     			oCount--;
     			Oreturned++;
     		}
