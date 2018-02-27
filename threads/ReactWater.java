@@ -50,6 +50,7 @@ public class ReactWater{
      *   Print out the message of "water was made!".
      **/
     public void MakeWater() {
+	lock.acquire();
     	while(hCount >= 2 && oCount >= 1){
 		System.out.println("Enough atoms for water to be made.");//debug message
 		hCount -= 2;
@@ -58,7 +59,8 @@ public class ReactWater{
 		HydrogenList.removeFirst();
 		OxygenList.removeFirst();
 		System.out.println("Water was made.");
-	}	
+	}
+	lock.release();
     } // end of Makewater()
     
     /**
