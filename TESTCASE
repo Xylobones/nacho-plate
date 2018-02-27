@@ -1,4 +1,132 @@
-TASK I
+TASK I - KTHREAD JOINING
+Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest1() simply tests if a thread is able join another ready thread. ThreadB, the joinee, should terminate first and display a
+message before ThreadA, the joiner, can display a message.
+
+    public static void selfTest1() {
+	System.out.println("Running test case 1");
+	
+	
+	Runnable B = new Runnable() {
+		public void run() {
+			System.out.println("ThreadB has started!");
+		}
+	};
+	KThread ThreadB = new KThread(B);
+	Runnable A = new Runnable() {
+		public void run() {
+			ThreadB.join();
+			System.out.println("ThreadB has finished!");
+		}
+	};
+	KThread ThreadA = new KThread(A);
+	
+	ThreadA.fork();
+	ThreadB.fork();
+	ThreadA.join();
+	ThreadB.join();
+	
+	}
+
+The output we get is:
+Running test case 1
+ThreadB has started!
+ThreadB has finished!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest2() ensures that joining a finished thread does not cause the joiner to sleep. The joining thread should immediately display 
+a message after the join attempt.
+
+	public static void selfTest2() {
+		System.out.println("Running test case 2");
+	
+		Runnable B = new Runnable() {
+			public void run() {
+				System.out.println("ThreadB has finished!");
+			}
+		};
+		KThread ThreadB = new KThread(B);
+		Runnable A = new Runnable() {
+			public void run() {
+				ThreadB.join();
+				System.out.println("Joining ThreadB did nothing!");
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		ThreadB.fork();
+		ThreadA.fork();
+		ThreadA.join();
+		ThreadB.join();
+	}
+
+The output we get is:
+Running test case 2
+ThreadB has finished!
+Joining ThreadB did nothing!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest3() ensures that a thread cannot join itself. The thread will display a message after the failed join attempt.
+
+	public static void selfTest3() {
+		System.out.println("Running test case 3");
+		LinkedList<KThread> L = new LinkedList<KThread>();
+	
+		Runnable A = new Runnable(){
+			public void run() {
+				L.getFirst().join();
+				System.out.println("ThreadA is not sleeping! The self join failed.");
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		L.add(ThreadA);
+		ThreadA.fork();
+		ThreadA.join();
+	}
+
+The output we get is:
+Running test case 3
+ThreadA is not sleeping! The self join failed.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest4() tests to see if cyclical joining fails as it should. ThreadA will join ThreadB, and then ThreadB will attempt to join ThreadA and immediately display a message stating that the join failed.
+
+	public static void selfTest4() {
+		System.out.println("Running test case 4");
+		LinkedList<KThread> L = new LinkedList<KThread>();
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				L.getFirst().join();
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		
+		Runnable B = new Runnable(){
+			public void run() {
+				ThreadA.join();
+				System.out.println("Thread B is not sleeping! The cyclical join failed!");
+			}
+		};
+		KThread ThreadB = new KThread(B);
+		L.add(ThreadB);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadA.join();
+		ThreadB.join();
+	}
+
+The output we get is:
+Running test case 4
+Thread B is not sleeping! The cyclical join failed!
+
+--------------------------------------------------------------------------------------------------------------------------------
 
 TASK II
 
