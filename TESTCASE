@@ -39,8 +39,7 @@ ThreadB has finished!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-selfTest2() ensures that joining a finished thread does not cause the joiner to sleep. The joining thread should immediately display 
-a message after the join attempt.
+selfTest2() ensures that joining a finished thread does not cause the joiner to sleep. The joining thread should immediately display a message after the join attempt.
 
 	public static void selfTest2() {
 		System.out.println("Running test case 2");
