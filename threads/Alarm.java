@@ -102,6 +102,11 @@ public class Alarm {
     	}
     }
 	
+	/**
+	* The first test case, selfTest1() test the alarm class against a singular thread to check wether it sleeps and/or wakes 
+	* within expected parameters. It does this by checking if the time taken for the thread to wake is within excpected 
+	* parameters given that the machine calls timerInterrupt around every ~500 ticks.
+	*/
 	public static void selfTest1() {
 		Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 1: ");
@@ -110,7 +115,9 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
-				if (Machine.timer().getTime() >= (current + 750)){
+				// If the therad waits ~750 ticks and wakes the next call to timerInterrupt (~1000 ticks).
+				if ((Machine.timer().getTime() >= (current + 750)) 
+				    && (Machine.timer().getTime() < (current + 1500))){
 					System.out.println("Case #1 Success!");
 					}
 				else 
@@ -122,7 +129,13 @@ public class Alarm {
 		ThreadA.fork();
 		ThreadA.join();
 	}
-	
+
+	/**
+	* The second test case tests the alarm class when given odd arguments such as a negatives or a zero. 
+	* In this case the thread should wake immediatly or as soon as possible (next timerInturrupt call). 
+	* We check if this holds true by checking if the time the thread spent waiting is within excpected parameters 
+	* given that the machine calls timerInterrupt around every ~500 ticks.
+	*/
 	public static void selfTest2() {
 		Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 2: ");
@@ -131,9 +144,14 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(0);
-				alarm.waitUntil(-42);
-				if (Machine.timer().getTime() <= (current + 1000)){
-					System.out.println("Case #2 Success!");
+				// The following If statements checks if the therad woke immediatly/next timerInterrupt call.
+				if (Machine.timer().getTime() <= (current + 500)){
+					alarm.waitUntil(-42);
+					if (Machine.timer().getTime() <= (current + 1000)){
+						System.out.println("Case #2 Success!");
+						}
+					else 
+						System.out.println("Case #2 Failure!");
 					}
 				else 
 					System.out.println("Case #2 Failure!");
@@ -145,6 +163,12 @@ public class Alarm {
 		ThreadA.join();
 	}
 	
+	/**
+	* The third test case, selfTest3() tests the alarm class against multiple threads to check wether they sleep and/or 
+	* wake within expected parameters and are awoken in a correct order. It does this by checking if the time taken for the 
+	* threads to wake is within excpected parameter given that the machine calls timerInterrupt around every ~500 ticks
+	* and by ensuring all threads are awoken in correct order based on their wake time.
+	*/
 	public static void selfTest3() {
 		Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 3: ");
@@ -153,7 +177,8 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
-				if (Machine.timer().getTime() >= (current + 750)){
+				if ((Machine.timer().getTime() >= (current + 750)) 
+				    && (Machine.timer().getTime() < (current + 1500))){
 					System.out.println("Case #3: ThreadA Success!");
 					}
 				else {
@@ -167,7 +192,8 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(2500);
-				if (Machine.timer().getTime() >= (current + 2500)){
+				if ((Machine.timer().getTime() >= (current + 2500)) 
+				    && (Machine.timer().getTime() < (current + 3000))){
 					System.out.println("Case #3: ThreadB Success!");
 					}
 				else {
@@ -181,7 +207,8 @@ public class Alarm {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(1500);
-				if (Machine.timer().getTime() >= (current + 1500)){
+				if ((Machine.timer().getTime() >= (current + 1500)) 
+				    && (Machine.timer().getTime() < (current + 2000))){
 					System.out.println("Case #3: ThreadC Success!");
 					}
 				else {
@@ -202,6 +229,12 @@ public class Alarm {
 		ThreadC.join();
 	}
 	
+		/**
+		* The forth test case tests the alarm class against multiple forks of the same thread to check wether they 
+		* sleep and/or wake within expected parameters and are awoken in a correct order. 
+		* It does this by outputting output ressembling an echo, in other words all messages should be followed by 
+		* their counterpart in the fork of the thread, resembling the effect of an echo.
+		*/
 		public static void selfTest4() {
 		Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 4: ");
