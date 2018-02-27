@@ -39,7 +39,7 @@ public class ReactWater{
     	if(hCount>=2 && oCount>=1){
     		lock.release();
     		MakeWater(sentByHydrogen);
-			System.out.println("hCount:"+hCount);
+			System.out.println("hCount (make):"+hCount);
     		hCount--;
     	}
     	else{
@@ -65,7 +65,7 @@ public class ReactWater{
     	if(hCount>=2 && oCount>=1){
     		lock.release();
     		MakeWater(sentByOxygen);
-			System.out.println("oCount:"+oCount);
+			System.out.println("oCount (make):"+oCount);
     		oCount--;
     	}
     	else{
@@ -93,9 +93,9 @@ public class ReactWater{
     	if (sentBy==sentByOxygen)
     		OxygenNeeded--;
     	int i=0;
-    			System.out.println(AtomList.size());
+    			System.out.println("List size: "+AtomList.size());
     	while((Hreturned < HydrogenNeeded || Oreturned < OxygenNeeded)
-    		 && i<AtomList.size()){ //while loop not being entered, atom list size = 0
+    		 && i<AtomList.size()){ 
     		lock.acquire();
     		if (type == 'H' && Hreturned < HydrogenNeeded){
     			AtomList.get(i).finish();
