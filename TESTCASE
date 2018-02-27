@@ -150,7 +150,7 @@ public static void selfTest1() {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
-        // If the therad waits at least 750 ticks and wakes after the next call to timerInterrupt (within 1000 - 1500 ticks).
+        // If the threadd waits at least 750 ticks and wakes after the next call to timerInterrupt (within 1000 - 1500 ticks).
 				if ((Machine.timer().getTime() >= (current + 750)) && (Machine.timer().getTime() < (current + 1500))){
 					System.out.println("Case #1 Success!");
 					}
@@ -164,7 +164,7 @@ public static void selfTest1() {
 		ThreadA.join();
 }
 
-The test case should output the following for a successfull run of the test case:
+The test case should output the following for a successful run of the test case:
 Running alarm test case 1: 
 Case #1 Success!
 
@@ -172,14 +172,14 @@ The test case should output the following for a failed run of the test case:
 Running alarm test case 1: 
 Case #1 Failure!
 
-When running the OS the first test case displayed the following, indicating a successfull run of the test case:
+When running the OS the first test case displayed the following, indicating a successful run of the test case:
 Running alarm test case 1: 
 Case #1 Success!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
 The second test case tests the alarm class when given odd arguments such as a negatives or a zero. In this case the thread 
-should wake immediatly or as soon as possible. We check if this holds true by checking if the time the thread spent waiting 
+should wake immediately  or as soon as possible. We check if this holds true by checking if the time the thread spent waiting 
 is within excpected parameters given that the machine calls timerInterrupt around every ~500 ticks.
 
 public static void selfTest2() {
@@ -190,7 +190,7 @@ public static void selfTest2() {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(0);
-				// The following If statements checks if the therad woke immediatly/next timerInterrupt call.
+				// The following If statements checks if the thread woke immediately /next timerInterrupt call.
 				if (Machine.timer().getTime() <= (current + 500)){
 					alarm.waitUntil(-42);
 					if (Machine.timer().getTime() <= (current + 1000)){
@@ -209,7 +209,7 @@ public static void selfTest2() {
 		ThreadA.join();
 	}
   
-The test case should output the following for a successfull run of the test case:
+The test case should output the following for a successful run of the test case:
 Running alarm test case 2:
 Case #2 Success!
 
@@ -217,15 +217,15 @@ The test case should output the following for a failed run of the test case:
 Running alarm test case 2:
 Case #2 Failure!
 
-When running the OS the second test case displayed the following indicating a successfull run of the test case:
+When running the OS the second test case displayed the following indicating a successful run of the test case:
 Running alarm test case 2:
 Case #2 Success!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The third test case, selfTest1() tests the alarm class against multiple threads to check wether they sleep and/or wake within 
+The third test case, selfTest1() tests the alarm class against multiple threads to check whether they sleep and/or wake within 
 expected parameters and are awoken in a correct order. It does this by checking if the time taken for the threads to wake is 
-within excpected parameter given that the machine calls timerInterrupt around every ~500 ticks and by ensuring all threads are 
+within expected parameter given that the machine calls timerInterrupt around every ~500 ticks and by ensuring all threads are 
 awoken in correct order based on their wake time.
 
 	public static void selfTest3() {
@@ -286,7 +286,7 @@ awoken in correct order based on their wake time.
 	}
 	
     
-The test case should output the following for a successfull run of the test case:
+The test case should output the following for a successful run of the test case:
 Running alarm test case 3:
 Case #3: ThreadA Success!
 ThreadA: This Should Display First
@@ -299,7 +299,7 @@ The test case may output multiple variations of the following for a failed run o
 An "Case #3: ThreadA/B/C Failure!" Message.
 OR an improper wake order of the waiting threads as seen via "ThreadA/B/C: This Should Display First/Second/Last".
 
-When running the OS the third test case displayed the following indicating a successfull run of the test case:
+When running the OS the third test case displayed the following indicating a successful run of the test case:
 Running alarm test case 3:
 Case #3: ThreadA Success!
 ThreadA: This Should Display First
@@ -310,7 +310,7 @@ ThreadB: This Should Display Last
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The forth test case tests the alarm class against multiple forks of the same thread to check wether they sleep and/or wake 
+The fourth test case tests the alarm class against multiple forks of the same thread to check whether they sleep and/or wake 
 within expected parameters and are awoken in a correct order. It does this by outputting output ressembling an echo, 
 in other words all messages should be followed by their counterpart in the fork of the thread resembling the effect of an echo.
 
@@ -336,7 +336,7 @@ in other words all messages should be followed by their counterpart in the fork 
 		ThreadA.join();
 }
 
-The test case should output the following for a successfull run of the test case, any other variation would be a failure:
+The test case should output the following for a successful run of the test case, any other variation would be a failure:
 Running alarm test case 4:
 Hello?
 Hello?
@@ -345,7 +345,7 @@ Stop Copying Me!
 Im Telling On You!!
 Im Telling On You!!
 
-When running the OS the third test case displayed the following indicating a successfull run of the test case:
+When running the OS the third test case displayed the following indicating a successful run of the test case:
 Running alarm test case 4:
 Hello?
 Hello?
