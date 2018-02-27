@@ -3,11 +3,15 @@ Task I
 Task II
 
 TASK III - ALARM
-Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user, having input already preassigned to any necessary values.
+Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user, 
+having input already preassigned to any necessary values.
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The first test case, selfTest1() test the alarm class against a singular thread to check wether it sleeps and/or wakes within expected parameters. It does this by checking if the time taken for the thread to wake is within excpected parameters given that the machine calls timerInterrupt around every ~500 ticks.
+The first test case, selfTest1() test the alarm class against a singular thread to check wether it sleeps and/or wakes within 
+expected parameters. It does this by checking if the time taken for the thread to wake is within excpected parameters given 
+that the machine calls timerInterrupt around every ~500 ticks.
 
 public static void selfTest1() {
 		Alarm alarm = new Alarm();
@@ -45,7 +49,9 @@ Case #1 Success!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The second test case tests the alarm class when given odd arguments such as a negatives or a zero. In this case the thread should wake immediatly or as soon as possible. We check if this holds true by checking if the time the thread spent waiting is within excpected parameters given that the machine calls timerInterrupt around every ~500 ticks.
+The second test case tests the alarm class when given odd arguments such as a negatives or a zero. In this case the thread 
+should wake immediatly or as soon as possible. We check if this holds true by checking if the time the thread spent waiting 
+is within excpected parameters given that the machine calls timerInterrupt around every ~500 ticks.
 
 public static void selfTest2() {
 		Alarm alarm = new Alarm();
@@ -88,7 +94,10 @@ Case #2 Success!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The third test case, selfTest1() tests the alarm class against multiple threads to check wether they sleep and/or wake within expected parameters and are awoken in a correct order. It does this by checking if the time taken for the threads to wake is within excpected parameter given that the machine calls timerInterrupt around every ~500 ticks and by ensuring all threads are awoken in correct order based on their wake time.
+The third test case, selfTest1() tests the alarm class against multiple threads to check wether they sleep and/or wake within 
+expected parameters and are awoken in a correct order. It does this by checking if the time taken for the threads to wake is 
+within excpected parameter given that the machine calls timerInterrupt around every ~500 ticks and by ensuring all threads are 
+awoken in correct order based on their wake time.
 
 	public static void selfTest3() {
 		Alarm alarm = new Alarm();
@@ -172,7 +181,9 @@ ThreadB: This Should Display Last
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The forth test case tests the alarm class against multiple forks of the same thread to check wether they sleep and/or wake within expected parameters and are awoken in a correct order. It does this by outputting output ressembling an echo, in other words all messages should be followed by their counterpart in the fork of the thread resembling the effect of an echo.
+The forth test case tests the alarm class against multiple forks of the same thread to check wether they sleep and/or wake 
+within expected parameters and are awoken in a correct order. It does this by outputting output ressembling an echo, 
+in other words all messages should be followed by their counterpart in the fork of the thread resembling the effect of an echo.
 
 		public static void selfTest4() {
 		Alarm alarm = new Alarm();
