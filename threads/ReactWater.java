@@ -90,20 +90,20 @@ public class ReactWater{
     public static void selfTest1(){
     	System.out.println("Start of test case 1:");
     	final ReactWater reactWater = new ReactWater();
-    	Runnable A = new Runnable(){
+    	Runnable H = new Runnable(){
     		public void run(){
     			System.out.println("Hydrogen is about to be prepared!");
     			reactWater.hReady();
     		}
     	};
-    	Runnable B = new Runnable(){
+    	Runnable O = new Runnable(){
     		public void run(){
     			System.out.println("Oxygen is about to be prepared!");
     			reactWater.oReady();
     		}
     	};
-    	KThread thread1 = new KThread(A);
-    	KThread thread2 = new KThread(B);
+    	KThread thread1 = new KThread(H);
+    	KThread thread2 = new KThread(O);
     	thread1.fork();
     	thread2.fork();
     	thread1.join();
@@ -119,21 +119,21 @@ public class ReactWater{
     public static void selfTest2(){
     	System.out.println("Start of test case 2:");
     	final ReactWater reactWater = new ReactWater();
-    	Runnable A = new Runnable(){
+    	Runnable H = new Runnable(){
     		public void run(){
     			System.out.println("Hydrogen is about to be prepared!");
     			reactWater.hReady();
     		}
     	};
-    	Runnable B = new Runnable(){
+    	Runnable O = new Runnable(){
     		public void run(){
     			System.out.println("Oxygen is about to be prepared!");
     			reactWater.oReady();
     		}
     	};
-    	KThread thread1 = new KThread(A);
-    	KThread thread2 = new KThread(B);
-    	KThread thread3 = new KThread(A);
+    	KThread thread1 = new KThread(H);
+    	KThread thread2 = new KThread(O);
+    	KThread thread3 = new KThread(H);
     	thread1.fork();
     	thread2.fork();
     	thread3.fork();
@@ -156,34 +156,34 @@ public class ReactWater{
     public static void selfTest3(){
     	System.out.println("Start of test case 3:");
     	final ReactWater reactWater = new ReactWater();
-    	Runnable A = new Runnable(){
+    	Runnable H = new Runnable(){
     		public void run(){
     			System.out.println("Hydrogen is about to be prepared!");
     			reactWater.hReady();
     		}
     	};
-    	Runnable B = new Runnable(){
+    	Runnable O = new Runnable(){
     		public void run(){
     			System.out.println("Oxygen is about to be prepared!");
     			reactWater.oReady();
     		}
     	};
-    	KThread thread1 = new KThread(A);
-    	KThread thread2 = new KThread(B);
-    	KThread thread3 = new KThread(A);
-    	KThread thread4 = new KThread(B);
-    	KThread thread5 = new KThread(B);
-    	KThread thread6 = new KThread(A);
-    	KThread thread7 = new KThread(A);
-    	KThread thread8 = new KThread(B);
-    	KThread thread9 = new KThread(A);
-    	KThread thread10 = new KThread(A);
-    	KThread thread11 = new KThread(B);
-    	KThread thread12 = new KThread(A);
-    	KThread thread13 = new KThread(A);
-    	KThread thread14 = new KThread(B);
-    	KThread thread15 = new KThread(A);
-    	KThread thread16 = new KThread(A);
+    	KThread thread1 = new KThread(H);
+    	KThread thread2 = new KThread(O);
+    	KThread thread3 = new KThread(H);
+    	KThread thread4 = new KThread(O);
+    	KThread thread5 = new KThread(O);
+    	KThread thread6 = new KThread(H);
+    	KThread thread7 = new KThread(H);
+    	KThread thread8 = new KThread(O);
+    	KThread thread9 = new KThread(H);
+    	KThread thread10 = new KThread(H);
+    	KThread thread11 = new KThread(O);
+    	KThread thread12 = new KThread(H);
+    	KThread thread13 = new KThread(H);
+    	KThread thread14 = new KThread(O);
+    	KThread thread15 = new KThread(H);
+    	KThread thread16 = new KThread(H);
     	thread1.fork();
     	thread2.fork();
     	thread3.fork();
@@ -232,33 +232,33 @@ public class ReactWater{
     public static void selfTest4(){
     	System.out.println("Start of test case 4: ");
     	final ReactWater reactWater = new ReactWater();
-    	Runnable A = new Runnable(){
+    	Runnable H = new Runnable(){
     		public void run(){
     			System.out.println("Hydrogen is about to be prepared!");
     			reactWater.hReady();
     		}
     	};
-    	Runnable B = new Runnable(){
+    	Runnable O = new Runnable(){
     		public void run(){
     			System.out.println("Oxygen is about to be prepared!");
     			reactWater.oReady();
     		}
     	};
-    	KThread thread1 = new KThread(A);
-    	KThread thread2 = new KThread(A);
-    	KThread thread3 = new KThread(A);
-    	KThread thread4 = new KThread(B);
-    	KThread thread5 = new KThread(B);
-    	KThread thread6 = new KThread(A);
-    	KThread thread7 = new KThread(A);
-    	KThread thread8 = new KThread(B);
-    	KThread thread9 = new KThread(A);
-    	KThread thread10 = new KThread(A);
-    	KThread thread11 = new KThread(B);
-    	KThread thread12 = new KThread(A);
-    	KThread thread13 = new KThread(A);
-    	KThread thread14 = new KThread(B);
-    	KThread thread15 = new KThread(A);
+    	KThread thread1 = new KThread(H);
+    	KThread thread2 = new KThread(H);
+    	KThread thread3 = new KThread(H);
+    	KThread thread4 = new KThread(O);
+    	KThread thread5 = new KThread(O);
+    	KThread thread6 = new KThread(H);
+    	KThread thread7 = new KThread(H);
+    	KThread thread8 = new KThread(O);
+    	KThread thread9 = new KThread(H);
+    	KThread thread10 = new KThread(H);
+    	KThread thread11 = new KThread(O);
+    	KThread thread12 = new KThread(H);
+    	KThread thread13 = new KThread(H);
+    	KThread thread14 = new KThread(O);
+    	KThread thread15 = new KThread(H);
     	thread1.fork();
     	thread2.fork();
     	thread3.fork();
@@ -292,4 +292,4 @@ public class ReactWater{
     	System.out.println("End of test case 4.");
     } // end of fourth test
     
-} // end of class ReactWater 
+} // end of class ReactWater
