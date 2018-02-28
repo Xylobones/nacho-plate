@@ -41,7 +41,65 @@ Thread B is not sleeping! The cyclical join failed!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-TASK II
+TASK II - THE CONDITION2 CLASS
+Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest1() tests the basic functionality of putting a thread to sleep through a condition variable and waking it. ThreadA sleeps, and 
+is later woken by ThreadB.
+
+The output we get is:
+Running condition test case 1
+ThreadA has the lock! Going to sleep.
+ThreadB has the lock!
+ThreadA is awake!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest2() tests having many sleeping threads and waking them all. Threads display a message whenever they acquire the lock. The 
+expected order of threads having the lock is A, B, C, D, A, B, C, D.
+
+The output we get is:
+Running condition test case 2
+ThreadA has the lock!
+ThreadB has the lock!
+ThreadC has the lock!
+ThreadD has the lock!
+ThreadA has the lock!
+ThreadB has the lock!
+ThreadC has the lock!
+ThreadD has the lock!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest3() tests the case of trying to call wake() and wakeAll() when there are no threads sleeping on the condition. When ThreadA has 
+the lock, it will attempt to call wake() and wakeAll() on an empty condition variable. ThreadB will then take the lock and display a 
+message. This shows that nothing unusual was caused by waking an empty condition variable.
+
+The output we get is:
+Running condition test case 3
+ThreadA has the lock! Trying to wake and wakeAll.
+ThreadB has the lock! There was nothing to wake.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest4() tests the case of trying to call condition methods without the respective lock. ThreadA will first sleep with the lock.
+When ThreadB becomes the current thread, it will not have the lock and attempt to sleep and wake ThreadA; both will fail. After, it will
+acquire the lock and succesfully wake up ThreadA.
+
+The output we get is:
+Running condition test case 4
+ThreadA has the lock!
+ThreadB is the current thread!
+ThreadB failed to sleep!
+ThreadB failed to wake!
+ThreadB now has the lock!
+ThreadA is awake!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
 
 TASK III - THE ALARM CLASS
 Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
