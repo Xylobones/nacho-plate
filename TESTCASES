@@ -382,6 +382,14 @@ value 5. Here is the layout of the test case method:
 		thread1.join();
 		thread2.join();
     }	// End of TestCase 1.
+    
+ Output:
+Running communicator test case 1 of 5
+Speaker Thread speaks to listener. Awaiting Verification!
+Listener receiving word spoken by speaker. Please wait for verification.
+Yup! Speaker Thread has finished speaking.
+Listener received!!!! Is this your word?: 5
+
 -------------------------------------------------------------------------------------------------------------------
 
 The second test case will demonstrate the effects of having one speaker and no listener, and is not meant to be terminated. For that 
@@ -426,6 +434,11 @@ confirm the word sent by the speaker. Here is the layout of the second test case
         	thread1.join();
         	  
     } //end of method. 
+    
+Output:
+Running communicator test case 2 of 5
+Speaker Thread speaking to listener.
+
 -------------------------------------------------------------------------------------------------------------------
 
 Test case three is similar to the previous test case; however, the difference is that this test case is testing what happens when there
@@ -486,11 +499,26 @@ is that the third one will increment the counter of listeners waiting to be exec
     	thread2.join();
     	thread3.join();
     }
+Output:
+Running communicator test case 3 of 5
+Speaker Thread A speaking to listener.
+Speaker Thread B speaking to listener.
+Speaker Thread C speaking to listener.
+
 -------------------------------------------------------------------------------------------------------------------
 
 The next test case demonstrates the functionality of all the previous test cases. It demonstrates the ability to have a functional 
 communicator class and the ability to have multiple threads waiting to be executed. Since the method is rather long, the layout will
 not be demonstrated, but will rather be available in the actual communicator class under testCase4(). 
+
+Output:
+Running communicator test case 4 of 5
+Speaker Thread A speaking to listener.
+Speaker Thread B speaking to listener.
+Listener receiving word spoken by speaker.
+Speaker Thread A finished speaking.
+Listener received: 5
+
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -499,6 +527,27 @@ method will have an equal number of speakers and listener, and will also feature
 For example, the method will call the speaker twice, and the listener will be called three times after that. As with the previous 
 test case, since the method itself is very long, the layout will not be included, but is accessible in the communicator class itself 
 in the selfTest5() method. 
+
+Output:
+Running communicator test case 5 of 5
+Speaker Thread A speaking to listener.
+Speaker Thread B speaking to listener.
+Listener Thread C receiving word spoken by speaker.
+Listener Thread D receiving word spoken by speaker.
+Listener Thread E receiving word spoken by speaker.
+Speaker Thread F speaking to listener.
+Speaker Thread F finished speaking.
+Listener Thread G receiving word spoken by speaker.
+Listener received: 3
+Listener Thread H receiving word spoken by speaker.
+Speaker Thread I speaking to listener.
+Speaker Thread I finished speaking.
+Listener received: 4
+Speaker Thread A finished speaking.
+Listener received: 1
+Speaker Thread B finished speaking.
+Listener received: 2
+
 
 -------------------------------------------------------------------------------------------------------------------
 
