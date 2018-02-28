@@ -120,7 +120,7 @@ public static void selfTest1() {
 			public void run() {
 				long current = Machine.timer().getTime();
 				alarm.waitUntil(750);
-        // If the threadd waits at least 750 ticks and wakes after the next call to timerInterrupt (within 1000 - 1500 ticks).
+        // If the thread waits at least 750 ticks and wakes after the next call to timerInterrupt (within 1000 - 1500 ticks).
 				if ((Machine.timer().getTime() >= (current + 750)) && (Machine.timer().getTime() < (current + 1500))){
 					System.out.println("Case #1 Success!");
 					}
@@ -527,6 +527,7 @@ In the interest of saving some space, the Runnable declarations, forks and joins
 	Finally, the threads can be joined for testing.
 		thread1.join();
 		thread2.join();
+		
 Test case 1:
 	This test case is demonstrative of any amount of atoms where no group of 2 hydrogens and 1 oxygen can be made. 
 	The above code is the code for this first case. In it, there are insufficient atoms to make water, so they wait 
