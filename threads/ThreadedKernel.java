@@ -57,9 +57,9 @@ public class ThreadedKernel extends Kernel {
     	Condition2.selfTest3();
     	Condition2.selfTest4();
     	Alarm.selfTest1();
-    	Alarm.selfTest2();
-    	Alarm.selfTest3();
-    	Alarm.selfTest4();
+    	//Alarm.selfTest2();
+    	//Alarm.selfTest3();
+    	//Alarm.selfTest4();
     	Communicator.selfTest1();
     	//Communicator.selfTest2();
     	//Communicator.selfTest3();
