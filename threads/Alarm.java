@@ -189,6 +189,7 @@ public class Alarm {
 		ThreadA.fork();
 		ThreadB.fork();
 		ThreadA.join();
+		ThreadB.join();
 	}
 	
 	/**
