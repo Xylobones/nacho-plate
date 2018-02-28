@@ -8,7 +8,8 @@ directory.
 It is recommended to run the program using the nachos shell script located in /nachos/bin/.
 Otherwise, you can run it with the command: "java nachos.machine.Machine $*".
 
-By default, ThreadedKernel.selfTest() will call all of our test cases except those that do not terminate. 
-Non-terminating test cases are commented out in ThreadedKernel.selfTest().
+By default, ThreadedKernel.selfTest() will not call test cases that do not terminate. It will also only call the first Alarm test case;
+the nachos javadocs states not to run multiple alarms at once.
+These test cases are commented out in ThreadedKernel.selfTest().
 
 The ReactWater class was significantly changed from the design document due to the feedback we received on it.
