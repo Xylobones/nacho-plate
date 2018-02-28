@@ -65,6 +65,10 @@ public class ThreadedKernel extends Kernel {
     	//Communicator.selfTest3();
     	Communicator.selfTest4();
     	//Communicator.selfTest5();
+    //	ReactWater.selfTest1();
+    	ReactWater.selfTest2();
+    //	ReactWater.selfTest3();
+    	ReactWater.selfTest4();
     	Semaphore.selfTest();
     	SynchList.selfTest();
 	if (Machine.bank() != null) {
