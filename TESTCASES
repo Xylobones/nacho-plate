@@ -217,6 +217,7 @@ in other words all messages should be followed by their counterpart in the fork 
 		ThreadA.fork();
 		ThreadB.fork();
 		ThreadA.join();
+		ThreadB.join();
 }
 
 The test case should output the following for a successful run of the test case, any other variation would be a failure:
