@@ -324,6 +324,181 @@ Stop Copying Me!
 Im Telling On You!!
 Im Telling On You!!
 
+-------------------------------------------------------------------------------------------------------------------
+
 TASK IV
+
+In creating the communicator class, five test cases were created: selfTest1, selfTest2, selfTest3, selfTest4, and selfTest5. Each test
+case is called by the ThreadedKernel selfTest method and calls all the self test methods in the communicator class respectively. The 
+methods themselves do not require any kind of user input, as it was entered already for the purpose of simplicity. 
+
+-------------------------------------------------------------------------------------------------------------------
+
+The first test case, selfTest1(), test the ability to handle both a speaker and a listener while waiting to communicate. This is a 
+small simulation of what could be happening throughout a basic live operation.  The beginning of the method will broadcast that it 
+is starting the self test 1 of 5, and then will proceed to the next step. The speaker will ‘speak’ a word to the listener and be 
+sent to sleep. Once the speaker’s word has been sent, the listener will listen for a ‘word’ sent by the speaker, and will respond 
+to the speakers request for a response, and will print out the ‘word’ that has been spoken. In this case, the word will be the integer
+value 5. Here is the layout of the test case method:
+
+    /**
+     * This test case will demonstrate the effects of the Communicator
+     * class while having both a speaker and a communicator in the ready
+     * queue.
+     */
+    public static void selfTest1(){ 
+    	
+		System.out.println("Running condition test case 1 of 5");
+    	final Communicator communicator = new Communicator();	
+		
+    	Runnable A = new Runnable(){
+    		
+    		public void run(){
+    			lock.acquire();
+    			System.out.println("Speaker Thread speaks to listener. Awaiting Verification!");
+    			communicator.speak(5);
+    			speakerSending.sleep();
+    			System.out.println("Yup! Speaker Thread has finished speaking.");
+    			lock.release();
+    		}
+    	};
+    	
+    	Runnable B = new Runnable(){
+    		public void run(){
+    			lock.acquire();
+    			System.out.println("Listener receiving word spoken by speaker. Please wait for verification.");
+    			int x = communicator.listen();
+    			listenerReceiving.sleep();
+    			System.out.println("Listener received!!!! Is this your word?: " + x);
+    			lock.release();
+    		}
+    	};
+    	
+    	KThread thread1 = new KThread(A);
+    	KThread thread2 = new KThread(B);
+		thread1.fork();
+		thread2.fork();
+		thread1.join();
+		thread2.join();
+    }	// End of TestCase 1.
+-------------------------------------------------------------------------------------------------------------------
+
+The second test case will demonstrate the effects of having one speaker and no listener, and is not meant to be terminated. For that 
+case, it was removed from the actual test cases for that reason. The speaker will send a ‘word’, in this case 5, to the listener, and
+go immediately to sleep. After this is completed, the listener will receive the ‘word’, and will go to sleep, since it will not 
+confirm the word sent by the speaker. Here is the layout of the second test case:
+
+    /**
+     * This test case will demonstrate the effects of having one speaker and no
+     * listener in the ready queue. This will be demonstrated in both ways for
+     * one speaker with no listener, as well as one listener with no speaker in
+     * the waiting queue. 
+     */
+    public static void selfTest2(){
+    	System.out.println("Running communicator test case 2 of 5");
+    		final Communicator communicator = new Communicator();	
+		
+    		Runnable A = new Runnable(){
+    			public void run(){
+    				lock.acquire();
+    				System.out.println("Speaker Thread speaking to listener.");
+    				communicator.speak(5);
+    				speakerSending.sleep();
+				System.out.println("Speaker Thread finished speaking, waiting on responce.");	
+    				lock.release();				
+    			}
+    		};
+    		
+        	Runnable B = new Runnable(){
+        		public void run(){
+        			lock.acquire();
+        			System.out.println("Listener receiving word spoken by speaker.");
+        			int x = communicator.listen();
+        			listenerReceiving.sleep();
+        			//here would print "Done" if there was another thread in the queue.
+        			lock.release();
+        		}
+        	};
+    		
+        	KThread thread1 = new KThread(A); //speaker
+        	thread1.fork();
+        	thread1.join();
+        	  
+    } //end of method. 
+-------------------------------------------------------------------------------------------------------------------
+
+Test case three is similar to the previous test case; however, the difference is that this test case is testing what happens when there
+is multiple speaker threads, and no listener threads. When the first thread speaks to the listener, it will send a ‘word’ to the 
+listener, and just like the previous case, the listener will listen and not respond. However, the difference between the two test cases
+is that the third one will increment the counter of listeners waiting to be executed. Here is the layout of the method:
+
+   /**
+     * This will test the effects of having multiple speaker or listener threads,
+     * and none of the other. Assuming 3 threads, they will respectively act upon
+     * their duties, and will be added to a waiting list until there is a thread of
+     * the respective origin.
+     */
+    public static void selfTest3(){
+    	System.out.println("Running communicator test case 3 of 5");
+		final Communicator communicator = new Communicator();	
+	
+		Runnable A = new Runnable(){
+			public void run(){
+				lock.acquire();
+				System.out.println("Speaker Thread A speaking to listener.");
+				communicator.speak(5);
+				speakerSending.sleep();
+				System.out.println("Speaker Thread A finished speaking, waiting on responce.");
+				lock.release();				
+			}
+		};
+		
+		Runnable B = new Runnable(){
+			public void run(){
+				lock.acquire();
+				System.out.println("Speaker Thread B speaking to listener.");
+				communicator.speak(6);
+				speakerSending.sleep();
+				System.out.println("Speaker Thread B finished speaking, waiting on responce.");
+				lock.release();				
+			}
+		};
+		
+		Runnable C = new Runnable(){
+			public void run(){
+				lock.acquire();
+				System.out.println("Speaker Thread C speaking to listener.");
+				communicator.speak(7);
+				speakerSending.sleep();
+				System.out.println("Speaker Thread C finished speaking, waiting on responce.");
+				lock.release();				
+			}
+		};
+    	
+		KThread thread1 = new KThread(A); //speaker
+		KThread thread2 = new KThread(B); //speaker
+		KThread thread3 = new KThread(C); //speaker
+    	thread1.fork();
+    	thread2.fork();
+    	thread3.fork();
+    	thread1.join();
+    	thread2.join();
+    	thread3.join();
+    }
+-------------------------------------------------------------------------------------------------------------------
+
+The next test case demonstrates the functionality of all the previous test cases. It demonstrates the ability to have a functional 
+communicator class and the ability to have multiple threads waiting to be executed. Since the method is rather long, the layout will
+not be demonstrated, but will rather be available in the actual communicator class under testCase4(). 
+
+-------------------------------------------------------------------------------------------------------------------
+
+The fifth and final test case is demonstrating a live demonstration of what is a possible outcome in a real world test scenario. This
+method will  have an equal number of speakers and listener, and will alternate have a different order in which the methods are called 
+in. For example, the method will call the speaker twice, and the listener will be called three times after that. Similarity to the 
+previous test case, since the method itself is very long, the layout will not be included, but is rather accessible in the communicator
+class itself in the selfTest5() method. 
+
+-------------------------------------------------------------------------------------------------------------------
 
 TASK V
