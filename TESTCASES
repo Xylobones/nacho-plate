@@ -194,7 +194,7 @@ Case #2 Success!
 --------------------------------------------------------------------------------------------------------------------------------
 
 The third test case tests the alarm class against multiple forks of the same thread to check whether they sleep and/or wake 
-within expected parameters and are awoken in a correct order. It does this by outputting output ressembling an echo, 
+within expected parameters and are awoken in a correct order. It does this by outputting output resembling an echo, 
 in other words all messages should be followed by their counterpart in the fork of the thread resembling the effect of an echo.
 
 		public static void selfTest3() {
