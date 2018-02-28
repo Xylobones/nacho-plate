@@ -163,81 +163,15 @@ public class Alarm {
 		ThreadA.join();
 	}
 	
-	/**
-	* The third test case, selfTest3() tests the alarm class against multiple threads to check wether they sleep and/or 
-	* wake within expected parameters and are awoken in a correct order. It does this by checking if the time taken for the 
-	* threads to wake is within excpected parameter given that the machine calls timerInterrupt around every ~500 ticks
-	* and by ensuring all threads are awoken in correct order based on their wake time.
-	*/
-	public static void selfTest3() {
-		Alarm alarm = new Alarm();
-		System.out.println("Running alarm test case 3: ");
-		
-		Runnable A = new Runnable() {
-			public void run() {
-				long current = Machine.timer().getTime();
-				alarm.waitUntil(750);
-				if ((Machine.timer().getTime() >= (current + 750)) 
-				    && (Machine.timer().getTime() < (current + 1500))){
-					System.out.println("Case #3: ThreadA Success!");
-					}
-				else {
-					System.out.println("Case #3: ThreadA Failure!");
-					}
-				System.out.println("ThreadA: This Should Display First");
-				}
-			};
-		
-		Runnable B = new Runnable() {
-			public void run() {
-				long current = Machine.timer().getTime();
-				alarm.waitUntil(2500);
-				if ((Machine.timer().getTime() >= (current + 2500)) 
-				    && (Machine.timer().getTime() < (current + 3000))){
-					System.out.println("Case #3: ThreadB Success!");
-					}
-				else {
-					System.out.println("Case #3: ThreadB Failure!");
-					}
-				System.out.println("ThreadB: This Should Display Last");
-				}
-			};
-		
-		Runnable C = new Runnable() {
-			public void run() {
-				long current = Machine.timer().getTime();
-				alarm.waitUntil(1500);
-				if ((Machine.timer().getTime() >= (current + 1500)) 
-				    && (Machine.timer().getTime() < (current + 2000))){
-					System.out.println("Case #3: ThreadC Success!");
-					}
-				else {
-					System.out.println("Case #3: ThreadC Failure!");
-					}
-				System.out.println("ThreadC: This Should Display Second");
-				}
-			};
-		
-		KThread ThreadA = new KThread(A);
-		KThread ThreadB = new KThread(B);
-		KThread ThreadC = new KThread(C);
-		ThreadA.fork();
-		ThreadB.fork();
-		ThreadC.fork();
-		ThreadA.join();
-		ThreadB.join();
-		ThreadC.join();
-	}
-	
 		/**
-		* The forth test case tests the alarm class against multiple forks of the same thread to check wether they 
+		* The third test case tests the alarm class against multiple forks of the same thread to check wether they 
 		* sleep and/or wake within expected parameters and are awoken in a correct order. 
 		* It does this by outputting output ressembling an echo, in other words all messages should be followed by 
 		* their counterpart in the fork of the thread, resembling the effect of an echo.
 		*/
-		public static void selfTest4() {
+		public static void selfTest3() {
 		Alarm alarm = new Alarm();
-		System.out.println("Running alarm test case 4: ");
+		System.out.println("Running alarm test case 3: ");
 		
 		//The thread should display hello, hello, stop copying me!, stop copying me!, Im Telling On You!!...
 		Runnable A = new Runnable() {
@@ -255,6 +189,72 @@ public class Alarm {
 		ThreadA.fork();
 		ThreadB.fork();
 		ThreadA.join();
+	}
+	
+	/**
+	* The fourth test case, selfTest4() tests the alarm class against multiple threads to check wether they sleep and/or 
+	* wake within expected parameters and are awoken in a correct order. It does this by checking if the time taken for the 
+	* threads to wake is within excpected parameter given that the machine calls timerInterrupt around every ~500 ticks
+	* and by ensuring all threads are awoken in correct order based on their wake time.
+	*/
+	public static void selfTest4() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running alarm test case 4: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(750);
+				if ((Machine.timer().getTime() >= (current + 750)) 
+				    && (Machine.timer().getTime() < (current + 1500))){
+					System.out.println("Case #4: ThreadA Success!");
+					}
+				else {
+					System.out.println("Case #4: ThreadA Failure!");
+					}
+				System.out.println("ThreadA: This Should Display First");
+				}
+			};
+		
+		Runnable B = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(2500);
+				if ((Machine.timer().getTime() >= (current + 2500)) 
+				    && (Machine.timer().getTime() < (current + 3000))){
+					System.out.println("Case #4: ThreadB Success!");
+					}
+				else {
+					System.out.println("Case #4: ThreadB Failure!");
+					}
+				System.out.println("ThreadB: This Should Display Last");
+				}
+			};
+		
+		Runnable C = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(1500);
+				if ((Machine.timer().getTime() >= (current + 1500)) 
+				    && (Machine.timer().getTime() < (current + 2000))){
+					System.out.println("Case #4: ThreadC Success!");
+					}
+				else {
+					System.out.println("Case #4: ThreadC Failure!");
+					}
+				System.out.println("ThreadC: This Should Display Second");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		KThread ThreadB = new KThread(B);
+		KThread ThreadC = new KThread(C);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadC.fork();
+		ThreadA.join();
+		ThreadB.join();
+		ThreadC.join();
 	}
 }
 
