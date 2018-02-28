@@ -1,0 +1,359 @@
+TASK I - KTHREAD JOINING
+Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest1() simply tests if a thread is able join another ready thread. ThreadB, the joinee, should terminate first and display a
+message before ThreadA, the joiner, can display a message.
+
+    public static void selfTest1() {
+	System.out.println("Running test case 1");
+	
+	
+	Runnable B = new Runnable() {
+		public void run() {
+			System.out.println("ThreadB has started!");
+		}
+	};
+	KThread ThreadB = new KThread(B);
+	Runnable A = new Runnable() {
+		public void run() {
+			ThreadB.join();
+			System.out.println("ThreadB has finished!");
+		}
+	};
+	KThread ThreadA = new KThread(A);
+	
+	ThreadA.fork();
+	ThreadB.fork();
+	ThreadA.join();
+	ThreadB.join();
+	
+	}
+
+The output we get is:
+Running test case 1
+ThreadB has started!
+ThreadB has finished!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest2() ensures that joining a finished thread does not cause the joiner to sleep. The joining thread should immediately display
+a message after the join attempt.
+
+	public static void selfTest2() {
+		System.out.println("Running test case 2");
+	
+		Runnable B = new Runnable() {
+			public void run() {
+				System.out.println("ThreadB has finished!");
+			}
+		};
+		KThread ThreadB = new KThread(B);
+		Runnable A = new Runnable() {
+			public void run() {
+				ThreadB.join();
+				System.out.println("Joining ThreadB did nothing!");
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		ThreadB.fork();
+		ThreadA.fork();
+		ThreadA.join();
+		ThreadB.join();
+	}
+
+The output we get is:
+Running test case 2
+ThreadB has finished!
+Joining ThreadB did nothing!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest3() ensures that a thread cannot join itself. The thread will display a message after the failed join attempt.
+
+	public static void selfTest3() {
+		System.out.println("Running test case 3");
+		LinkedList<KThread> L = new LinkedList<KThread>();
+	
+		Runnable A = new Runnable(){
+			public void run() {
+				L.getFirst().join();
+				System.out.println("ThreadA is not sleeping! The self join failed.");
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		L.add(ThreadA);
+		ThreadA.fork();
+		ThreadA.join();
+	}
+
+The output we get is:
+Running test case 3
+ThreadA is not sleeping! The self join failed.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+selfTest4() tests to see if cyclical joining fails as it should. ThreadA will join ThreadB, and then ThreadB will attempt to join
+ThreadA and immediately display a message stating that the join failed.
+
+	public static void selfTest4() {
+		System.out.println("Running test case 4");
+		LinkedList<KThread> L = new LinkedList<KThread>();
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				L.getFirst().join();
+			}
+		};
+		KThread ThreadA = new KThread(A);
+		
+		Runnable B = new Runnable(){
+			public void run() {
+				ThreadA.join();
+				System.out.println("Thread B is not sleeping! The cyclical join failed!");
+			}
+		};
+		KThread ThreadB = new KThread(B);
+		L.add(ThreadB);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadA.join();
+		ThreadB.join();
+	}
+
+The output we get is:
+Running test case 4
+Thread B is not sleeping! The cyclical join failed!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+TASK II
+
+TASK III - THE ALARM CLASS
+Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user, 
+having input already preassigned to any necessary values.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+The first test case, selfTest1() test the alarm class against a singular thread to check wether it sleeps and/or wakes within 
+expected parameters. It does this by checking if the time taken for the thread to wake is within excpected parameters given 
+that the machine calls timerInterrupt around every ~500 ticks.
+
+public static void selfTest1() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running alarm test case 1: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(750);
+        // If the threadd waits at least 750 ticks and wakes after the next call to timerInterrupt (within 1000 - 1500 ticks).
+				if ((Machine.timer().getTime() >= (current + 750)) && (Machine.timer().getTime() < (current + 1500))){
+					System.out.println("Case #1 Success!");
+					}
+				else 
+					System.out.println("Case #1 Failure!");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		ThreadA.fork();
+		ThreadA.join();
+}
+
+The test case should output the following for a successful run of the test case:
+Running alarm test case 1: 
+Case #1 Success!
+
+The test case should output the following for a failed run of the test case:
+Running alarm test case 1: 
+Case #1 Failure!
+
+When running the OS the first test case displayed the following, indicating a successful run of the test case:
+Running alarm test case 1: 
+Case #1 Success!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+The second test case tests the alarm class when given odd arguments such as a negatives or a zero. In this case the thread 
+should wake immediately  or as soon as possible. We check if this holds true by checking if the time the thread spent waiting 
+is within excpected parameters given that the machine calls timerInterrupt around every ~500 ticks.
+
+public static void selfTest2() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running alarm test case 2: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(0);
+				// The following If statements checks if the thread woke immediately /next timerInterrupt call.
+				if (Machine.timer().getTime() <= (current + 500)){
+					alarm.waitUntil(-42);
+					if (Machine.timer().getTime() <= (current + 1000)){
+						System.out.println("Case #2 Success!");
+						}
+					else 
+						System.out.println("Case #2 Failure!");
+					}
+				else 
+					System.out.println("Case #2 Failure!");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		ThreadA.fork();
+		ThreadA.join();
+	}
+  
+The test case should output the following for a successful run of the test case:
+Running alarm test case 2:
+Case #2 Success!
+
+The test case should output the following for a failed run of the test case:
+Running alarm test case 2:
+Case #2 Failure!
+
+When running the OS the second test case displayed the following indicating a successful run of the test case:
+Running alarm test case 2:
+Case #2 Success!
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+The third test case, selfTest1() tests the alarm class against multiple threads to check whether they sleep and/or wake within 
+expected parameters and are awoken in a correct order. It does this by checking if the time taken for the threads to wake is 
+within expected parameter given that the machine calls timerInterrupt around every ~500 ticks and by ensuring all threads are 
+awoken in correct order based on their wake time.
+
+	public static void selfTest3() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running alarm test case 3: ");
+		
+		Runnable A = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(750);
+				if ((Machine.timer().getTime() >= (current + 750)) && (Machine.timer().getTime() < (current + 1500))){
+					System.out.println("Case #3: ThreadA Success!");
+					}
+				else {
+					System.out.println("Case #3: ThreadA Failure!");
+					}
+				System.out.println("ThreadA: This Should Display First");
+				}
+			};
+		
+		Runnable B = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(2500);
+				if ((Machine.timer().getTime() >= (current + 2500)) && (Machine.timer().getTime() < (current + 3000))){
+					System.out.println("Case #3: ThreadB Success!");
+					}
+				else {
+					System.out.println("Case #3: ThreadB Failure!");
+					}
+				System.out.println("ThreadB: This Should Display Last");
+				}
+			};
+		
+		Runnable C = new Runnable() {
+			public void run() {
+				long current = Machine.timer().getTime();
+				alarm.waitUntil(1500);
+				if ((Machine.timer().getTime() >= (current + 1500)) && (Machine.timer().getTime() < (current + 2000))){
+					System.out.println("Case #3: ThreadC Success!");
+					}
+				else {
+					System.out.println("Case #3: ThreadC Failure!");
+					}
+				System.out.println("ThreadC: This Should Display Second");
+				}
+			};
+		
+		KThread ThreadA = new KThread(A);
+		KThread ThreadB = new KThread(B);
+		KThread ThreadC = new KThread(C);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadC.fork();
+		ThreadA.join();
+		ThreadB.join();
+		ThreadC.join();
+	}
+	
+    
+The test case should output the following for a successful run of the test case:
+Running alarm test case 3:
+Case #3: ThreadA Success!
+ThreadA: This Should Display First
+Case #3: ThreadC Success!
+ThreadC: This Should Display Second
+Case #3: ThreadB Success!
+ThreadB: This Should Display Last
+
+The test case may output multiple variations of the following for a failed run of the test case:
+An "Case #3: ThreadA/B/C Failure!" Message.
+OR an improper wake order of the waiting threads as seen via "ThreadA/B/C: This Should Display First/Second/Last".
+
+When running the OS the third test case displayed the following indicating a successful run of the test case:
+Running alarm test case 3:
+Case #3: ThreadA Success!
+ThreadA: This Should Display First
+Case #3: ThreadC Success!
+ThreadC: This Should Display Second
+Case #3: ThreadB Success!
+ThreadB: This Should Display Last
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+The fourth test case tests the alarm class against multiple forks of the same thread to check whether they sleep and/or wake 
+within expected parameters and are awoken in a correct order. It does this by outputting output ressembling an echo, 
+in other words all messages should be followed by their counterpart in the fork of the thread resembling the effect of an echo.
+
+		public static void selfTest4() {
+		Alarm alarm = new Alarm();
+		System.out.println("Running alarm test case 4: ");
+		
+		//The thread should display hello, hello, stop copying me!, stop copying me!, Im Telling On You!!...
+		Runnable A = new Runnable() {
+			public void run() {
+				alarm.waitUntil(750);
+				System.out.println("Hello?");
+				alarm.waitUntil(2500);
+				System.out.println("Stop Copying Me!");
+				alarm.waitUntil(7500);
+				System.out.println("Im Telling On You!!");
+			};
+		};
+		KThread ThreadA = new KThread(A);
+		KThread ThreadB = new KThread(A);
+		ThreadA.fork();
+		ThreadB.fork();
+		ThreadA.join();
+}
+
+The test case should output the following for a successful run of the test case, any other variation would be a failure:
+Running alarm test case 4:
+Hello?
+Hello?
+Stop Copying Me!
+Stop Copying Me!
+Im Telling On You!!
+Im Telling On You!!
+
+When running the OS the third test case displayed the following indicating a successful run of the test case:
+Running alarm test case 4:
+Hello?
+Hello?
+Stop Copying Me!
+Stop Copying Me!
+Im Telling On You!!
+Im Telling On You!!
+
+TASK IV
+
+TASK V
