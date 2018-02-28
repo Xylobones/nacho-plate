@@ -182,7 +182,7 @@ public class Alarm {
 				System.out.println("Stop Copying Me!");
 				alarm.waitUntil(7500);
 				System.out.println("Im Telling On You!!");
-			};
+			}
 		};
 		KThread ThreadA = new KThread(A);
 		KThread ThreadB = new KThread(A);
