@@ -3,6 +3,11 @@ package nachos.threads;
 import nachos.machine.*;
 import java.util.LinkedList;
 
+/**
+ *   An implementation of ReactWater using a lock and condition variables. 
+ *   This allows for synchronization of making water when hydrogen and 
+ *   oxygen threads arrive in unpredictable order.
+ */
 public class ReactWater{
 	
 	private Condition2 Hydrogen;
@@ -13,6 +18,8 @@ public class ReactWater{
 	
     /** 
      *   Constructor of ReactWater
+     *   Allocate a lock and conditions to allow synchronization of making 
+     *   water. Initialize hydrogena nd oxygen counts to 0.
      **/
     public ReactWater() {
 		lock=new Lock();
@@ -20,13 +27,13 @@ public class ReactWater{
 		Oxygen = new Condition2(lock);
     	oCount=0;
     	hCount=0;
-
     } // end of ReactWater()
 
     /** 
-     *   When H element comes, if there already exist another H element 
-     *   and an O element, then call the method of Makewater(). Or let 
-     *   H element wait in line. 
+     *   When H element comes, add to count and acquire lock. Then, 
+     *   if there already exist another H element and an O element, 
+     *   wake them, then call the method of Makewater(). 
+     *   Or let H element wait in line. 
      **/ 
     public void hReady() {
     	hCount++;
@@ -42,9 +49,10 @@ public class ReactWater{
     } // end of hReady()
  
     /** 
-     *   When O element comes, if there already exist another two H
-     *   elements, then call the method of Makewater(). Or let O element
-     *   wait in line. 
+     *   When O element comes, add to count and acquire lock. Then, 
+     *   if there already exist another two H elements, wake them, 
+     *   then call the method of Makewater(). 
+     *   Or let O element wait in line. 
      **/ 
     public void oReady() {
     	oCount++;
@@ -59,11 +67,14 @@ public class ReactWater{
     } // end of oReady()
     
     /** 
+     *   Verify the number of atoms while still holding lock. 
+     *   If sufficient, remove them from counts.
      *   Print out the message of "water was made!".
+     *   Release the lock.
      **/
     public void MakeWater() {
     	while(hCount >= 2 && oCount >= 1){
-			System.out.println("Enough atoms for water to be made.");//debug message
+			System.out.print("Enough atoms for water to be made. - ");//debug message
 			hCount -= 2;
 			oCount--;
 			System.out.println("Water was made.");
@@ -94,8 +105,8 @@ public class ReactWater{
     	KThread thread2 = new KThread(B);
     	thread1.fork();
     	thread2.fork();
-    	//thread1.join();
-    	//thread2.join();
+    	thread1.join();
+    	thread2.join();
     } // end of first test
     
     /**
@@ -135,7 +146,8 @@ public class ReactWater{
      * called returning 2 hydrogen and 1 oxygen leaving any extra atoms 
      * as sleeping threads. This effect will continue until all water 
      * that can be made is made. Either all threads will be returned or 
-     * remaining upaired atoms will wait indefinitely.
+     * remaining upaired atoms will wait indefinitely. In this case, 
+     * there will be an unpaired oxygen left over.
      */
     public static void selfTest3(){
     	final ReactWater reactWater = new ReactWater();
@@ -201,5 +213,75 @@ public class ReactWater{
     	thread16.join();
     } // end of third test
     
+    /**
+     * This test case will demonstrate the effect of having abundant 
+     * atoms. The effect will be: threads are added to the ready queue 
+     * until sufficient atoms for makeWater exist, makeWater will be 
+     * called returning 2 hydrogen and 1 oxygen leaving any extra atoms 
+     * as sleeping threads. This effect will continue until all water 
+     * that can be made is made. Either all threads will be returned or 
+     * remaining upaired atoms will wait indefinitely. In this case, 
+     * all atoms will be paired and the machine can exit.
+     */
+    public static void selfTest4(){
+    	final ReactWater reactWater = new ReactWater();
+    	Runnable A = new Runnable(){
+    		public void run(){
+    			System.out.println("Hydrogen is about to be prepared!");
+    			reactWater.hReady();
+    		}
+    	};
+    	Runnable B = new Runnable(){
+    		public void run(){
+    			System.out.println("Oxygen is about to be prepared!");
+    			reactWater.oReady();
+    		}
+    	};
+    	KThread thread1 = new KThread(A);
+    	KThread thread2 = new KThread(A);
+    	KThread thread3 = new KThread(A);
+    	KThread thread4 = new KThread(B);
+    	KThread thread5 = new KThread(B);
+    	KThread thread6 = new KThread(A);
+    	KThread thread7 = new KThread(A);
+    	KThread thread8 = new KThread(B);
+    	KThread thread9 = new KThread(A);
+    	KThread thread10 = new KThread(A);
+    	KThread thread11 = new KThread(B);
+    	KThread thread12 = new KThread(A);
+    	KThread thread13 = new KThread(A);
+    	KThread thread14 = new KThread(B);
+    	KThread thread15 = new KThread(A);
+    	thread1.fork();
+    	thread2.fork();
+    	thread3.fork();
+    	thread4.fork();
+    	thread5.fork();
+    	thread6.fork();
+    	thread7.fork();
+    	thread8.fork();
+    	thread9.fork();
+    	thread10.fork();
+    	thread11.fork();
+    	thread12.fork();
+    	thread13.fork();
+    	thread14.fork();
+    	thread15.fork();
+    	thread1.join();
+    	thread2.join();
+    	thread3.join();
+    	thread4.join();
+    	thread5.join();
+    	thread6.join();
+    	thread7.join();
+    	thread8.join();
+    	thread9.join();
+    	thread10.join();
+    	thread11.join();
+    	thread12.join();
+    	thread13.join();
+    	thread14.join();
+    	thread15.join();
+    } // end of fourth test
+    
 } // end of class ReactWater
-
