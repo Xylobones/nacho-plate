@@ -1,0 +1,14 @@
+Phase 1: Building a Thread System
+Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, Sean Rochon
+COSC 3807 - Operating Systems I
+Group 1
+
+To get the assignment to run, simply compile everything under the /nachos/ag, /nachos/machine, /nachos/security and /nachos/threads
+directory.
+It is recommended to run the program using the nachos shell script located in /nachos/bin/.
+Otherwise, you can run it with the command: "java nachos.machine.Machine $*".
+
+By default, ThreadedKernel.selfTest() will call all of our test cases except those that do not terminate. 
+Non-terminating test cases are commented out in ThreadedKernel.selfTest().
+
+The ReactWater class was significantly changed from the design document due to the feedback we received on it.
