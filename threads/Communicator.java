@@ -12,8 +12,8 @@ import nachos.machine.*;
 public class Communicator {
 	
 	private Lock lock;				//lock variable
-	private static Condition2 listenerReceiving;
-	private static Condition2 speakerSending;
+	private Condition2 listenerReceiving;
+	private Condition2 speakerSending;
 	private Integer wordTransfer;
 	private int listener; //counters to keep the number of listeners waiting.
     /**
