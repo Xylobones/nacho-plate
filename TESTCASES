@@ -42,7 +42,7 @@ Thread B is not sleeping! The cyclical join failed!
 --------------------------------------------------------------------------------------------------------------------------------
 
 TASK II - THE CONDITION2 CLASS
-Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Four different test cases were used in the testing of the Condition2 class; selfTest1, selfTest2, selfTest3 and selfTest4. 
 Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user.
 
 --------------------------------------------------------------------------------------------------------------------------------
