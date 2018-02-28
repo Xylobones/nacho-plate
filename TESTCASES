@@ -535,7 +535,8 @@ Test case 1:
 		Start of test case 1:
 		Hydrogen is about to be prepared!
 		Oxygen is about to be prepared!
-	
+	Hydrogen and oxygen have no final hydrogen to make water, so they wait indefinitely.
+		
 Test case 2:
 	This case demontrates the results of exactly the right amount of atoms to make one water. One hydrogen is created 
 	and it waits. One oxygen is created and it waits. The next hydrogen provides sufficient total atoms to create a 
