@@ -88,6 +88,7 @@ public class ReactWater{
      * does not contain both 2 hydogens and an oxygen in the waiting queue.
      */
     public static void selfTest1(){
+    	System.out.println("Start of test case 1:");
     	final ReactWater reactWater = new ReactWater();
     	Runnable A = new Runnable(){
     		public void run(){
@@ -107,6 +108,7 @@ public class ReactWater{
     	thread2.fork();
     	thread1.join();
     	thread2.join();
+    	System.out.println("End of test case 1.");
     } // end of first test
     
     /**
@@ -115,6 +117,7 @@ public class ReactWater{
      * of makeWater, causing all threads to be returned.
      */
     public static void selfTest2(){
+    	System.out.println("Start of test case 2:");
     	final ReactWater reactWater = new ReactWater();
     	Runnable A = new Runnable(){
     		public void run(){
@@ -137,6 +140,7 @@ public class ReactWater{
     	thread1.join();
     	thread2.join();
     	thread3.join();
+    	System.out.println("End of test case 2.");
     } // end of second test
     
     /**
@@ -150,6 +154,7 @@ public class ReactWater{
      * there will be an unpaired oxygen left over.
      */
     public static void selfTest3(){
+    	System.out.println("Start of test case 3:");
     	final ReactWater reactWater = new ReactWater();
     	Runnable A = new Runnable(){
     		public void run(){
@@ -211,6 +216,7 @@ public class ReactWater{
     	thread14.join();
     	thread15.join();
     	thread16.join();
+    	System.out.println("End of test case 3.");
     } // end of third test
     
     /**
@@ -224,6 +230,7 @@ public class ReactWater{
      * all atoms will be paired and the machine can exit.
      */
     public static void selfTest4(){
+    	System.out.println("Start of test case 4: ");
     	final ReactWater reactWater = new ReactWater();
     	Runnable A = new Runnable(){
     		public void run(){
@@ -282,6 +289,7 @@ public class ReactWater{
     	thread13.join();
     	thread14.join();
     	thread15.join();
+    	System.out.println("End of test case 4.");
     } // end of fourth test
     
 } // end of class ReactWater
