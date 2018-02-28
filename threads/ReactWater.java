@@ -5,8 +5,8 @@ import java.util.LinkedList;
 
 public class ReactWater{
 	
-	private LinkedList<KThread> HydrogenList;
-	private LinkedList<KThread> OxygenList;
+	private Condition2 Hydrogen;
+	private Condition2 Oxygen;
 	private int oCount;
 	private int hCount;
 	private Lock lock;
@@ -15,11 +15,11 @@ public class ReactWater{
      *   Constructor of ReactWater
      **/
     public ReactWater() {
-    	HydrogenList=new LinkedList<KThread>();
-	OxygenList=new LinkedList<KThread>();
+		lock=new Lock();
+    	Hydrogen = new Condition2(lock);
+		Oxygen = new Condition2(lock);
     	oCount=0;
     	hCount=0;
-    	lock=new Lock();
 
     } // end of ReactWater()
 
@@ -30,8 +30,14 @@ public class ReactWater{
      **/ 
     public void hReady() {
     	hCount++;
-	HydrogenList.add(KThread.currentThread());
-	MakeWater();
+		lock.acquire();
+		if(hCount >= 2 && oCount >= 1){
+			Hydrogen.wake();
+			Oxygen.wake();
+		}	
+		else
+			Hydrogen.sleep();
+		MakeWater();
     	
     } // end of hReady()
  
@@ -42,25 +48,27 @@ public class ReactWater{
      **/ 
     public void oReady() {
     	oCount++;
-	OxygenList.add(KThread.currentThread());
-	MakeWater();
+		lock.acquire();
+		if(hCount >= 2 && oCount >= 1){
+			Hydrogen.wake();
+			Hydrogen.wake();
+		}	
+		else
+			Oxygen.sleep();
+		MakeWater();
     } // end of oReady()
     
     /** 
      *   Print out the message of "water was made!".
      **/
     public void MakeWater() {
-	lock.acquire();
     	while(hCount >= 2 && oCount >= 1){
-		System.out.println("Enough atoms for water to be made.");//debug message
-		hCount -= 2;
-		oCount--;
-		HydrogenList.removeFirst();
-		HydrogenList.removeFirst();
-		OxygenList.removeFirst();
-		System.out.println("Water was made.");
-	}
-	lock.release();
+			System.out.println("Enough atoms for water to be made.");//debug message
+			hCount -= 2;
+			oCount--;
+			System.out.println("Water was made.");
+		}
+		lock.release();
     } // end of Makewater()
     
     /**
