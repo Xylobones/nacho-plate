@@ -532,9 +532,9 @@ In the interest of saving some space, the Runnable declarations, forks and joins
 		thread2.join();
 		
 Test case 1:
-	This test case is demonstrative of any amount of atoms where no group of 2 hydrogens and 1 oxygen can be made. 
-	The above code is the code for this first case. In it, there are insufficient atoms to make water, so they wait 
-	indefinitely for more threads that aren't coming.
+	This test case is demonstrative of any amount of atoms where no group of 2 hydrogens and 1 oxygen can be made (except the case
+	of zero threads, in which case the machine has nothing to do and so exits). The above code is the code for this first case. 
+	In it, there are insufficient atoms to make water, so they wait indefinitely for more threads that aren't coming.
 	It would give: 
 		Start of test case 1:
 		Hydrogen is about to be prepared!
@@ -542,9 +542,9 @@ Test case 1:
 	Hydrogen and oxygen have no final hydrogen to make water, so they wait indefinitely.
 		
 Test case 2:
-	This case demontrates the results of exactly the right amount of atoms to make one water. One hydrogen is created 
-	and it waits. One oxygen is created and it waits. The next hydrogen provides sufficient total atoms to create a 
-	water and so this is done. Since there are no more waiting threads nor any more threads to be created, the machine exits.
+	This case demontrates the results of exactly the right amount of atoms to make one water. One hydrogen is created and it waits. 
+	One oxygen is created and it waits. The next hydrogen provides sufficient total atoms to create a water and so this is done. 
+	Since there are no more waiting threads nor any more threads to be created, the machine exits.
 		KThread thread1 = new KThread(H);
 		KThread thread2 = new KThread(O);
 		KThread thread3 = new KThread(H);
@@ -558,11 +558,10 @@ Test case 2:
 		Machine halting!
 
 Test case 3:
-	This test case will demonstrate the effect of having abundant atoms. The effect will be: threads are added to the 
-	ready queue until sufficient atoms for makeWater exist, makeWater will be called returning 2 hydrogen and 1 oxygen 
-	leaving any extra atoms as sleeping threads. This effect will continue until all water that can be made is made. 
-	Either all threads will be returned or remaining upaired atoms will wait indefinitely. In this case, there will be 
-	an unpaired oxygen left over.
+	This test case will demonstrate the effect of having abundant atoms. The effect will be: threads are added to the ready queue 
+	until sufficient atoms for makeWater exist, makeWater will be called returning 2 hydrogen and 1 oxygen leaving any extra atoms 
+	as sleeping threads. This effect will continue until all water that can be made is made. Either all threads will be returned 
+	or remaining upaired atoms will wait indefinitely. In this case, there will be an unpaired oxygen left over.
 		KThread thread1 = new KThread(H);
 		KThread thread2 = new KThread(O);
 		KThread thread3 = new KThread(H);
@@ -605,8 +604,8 @@ Test case 3:
 	The 6th oxygen was not used in any water making, and so will wait indefinitely for more threads that are never coming.
 
 Test case 4:
-	Very similar premise to test case 3, except that there are a number of atoms that can pair into water without any 
-	left over. In this case, all atoms can be paired and the machine can exit.
+	Very similar premise to test case 3, except that there are a number of atoms that can pair into water without any left over. 
+	In this case, all atoms can be paired and the machine can exit.
 	    	KThread thread1 = new KThread(H);
 		KThread thread2 = new KThread(H);
 		KThread thread3 = new KThread(H);
