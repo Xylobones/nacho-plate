@@ -495,10 +495,10 @@ not be demonstrated, but will rather be available in the actual communicator cla
 -------------------------------------------------------------------------------------------------------------------
 
 The fifth and final test case is demonstrating a live demonstration of what is a possible outcome in a real world test scenario. This
-method will  have an equal number of speakers and listener, and will alternate have a different order in which the methods are called 
-in. For example, the method will call the speaker twice, and the listener will be called three times after that. Similarity to the 
-previous test case, since the method itself is very long, the layout will not be included, but is rather accessible in the communicator
-class itself in the selfTest5() method. 
+method will have an equal number of speakers and listener, and will also feature a different order in which the methods are called. 
+For example, the method will call the speaker twice, and the listener will be called three times after that. As with the previous 
+test case, since the method itself is very long, the layout will not be included, but is accessible in the communicator class itself 
+in the selfTest5() method. 
 
 -------------------------------------------------------------------------------------------------------------------
 
