@@ -1,5 +1,5 @@
 TASK I - KTHREAD JOINING
-Four different test cases were used in the testing of the alarm class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Four different test cases were used in the testing of the KThread class; selfTest1, selfTest2, selfTest3 and selfTest4. 
 Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user.
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -504,6 +504,8 @@ class itself in the selfTest5() method.
 
 TASK V
 ----------------------------------------------------------------------------------------------------------------------------------------
+Four different test cases were used in the testing of the ReactWater class; selfTest1, selfTest2, selfTest3 and selfTest4. 
+Each of these test cases are called via ThreadedKernal selfTest method and requires no input from the user.
 For all test cases, threads are destined to be one of two options: either a hydrogen or an oxygen atom as follows:
 Here Runnable H is a hydrogen atom and O is an oxygen. They print which type they are and announce ready status. 
 In the interest of saving some space, the Runnable declarations, forks and joins won't be repeated at each test case.
