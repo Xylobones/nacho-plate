@@ -108,7 +108,7 @@ public class Alarm {
 	* parameters given that the machine calls timerInterrupt around every ~500 ticks.
 	*/
 	public static void selfTest1() {
-		Alarm alarm = new Alarm();
+		final Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 1: ");
 		
 		Runnable A = new Runnable() {
@@ -137,7 +137,7 @@ public class Alarm {
 	* given that the machine calls timerInterrupt around every ~500 ticks.
 	*/
 	public static void selfTest2() {
-		Alarm alarm = new Alarm();
+		final Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 2: ");
 		
 		Runnable A = new Runnable() {
@@ -170,7 +170,7 @@ public class Alarm {
 		* their counterpart in the fork of the thread, resembling the effect of an echo.
 		*/
 		public static void selfTest3() {
-		Alarm alarm = new Alarm();
+		final Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 3: ");
 		
 		//The thread should display hello, hello, stop copying me!, stop copying me!, Im Telling On You!!...
@@ -199,7 +199,7 @@ public class Alarm {
 	* and by ensuring all threads are awoken in correct order based on their wake time.
 	*/
 	public static void selfTest4() {
-		Alarm alarm = new Alarm();
+		final Alarm alarm = new Alarm();
 		System.out.println("Running alarm test case 4: ");
 		
 		Runnable A = new Runnable() {
