@@ -329,7 +329,7 @@ ThreadB: This Should Display Last
 
 TASK IV
 
-In creating the communicator class, five test cases were created: selfTest1, selfTest2, selfTest3, selfTest4, and selfTest5. Each test
+In creating the Communicator class, five test cases were created: selfTest1, selfTest2, selfTest3, selfTest4, and selfTest5. Each test
 case is called by the ThreadedKernel selfTest method and calls all the self test methods in the communicator class respectively. The 
 methods themselves do not require any kind of user input, as it was entered already for the purpose of simplicity. 
 
@@ -385,7 +385,7 @@ value 5. Here is the layout of the test case method:
 -------------------------------------------------------------------------------------------------------------------
 
 The second test case will demonstrate the effects of having one speaker and no listener, and is not meant to be terminated. For that 
-case, it was removed from the actual test cases for that reason. The speaker will send a ‘word’, in this case 5, to the listener, and
+reason, it was removed from the actual test cases (commented), The speaker will send a ‘word’, in this case '5', to the listener, and
 go immediately to sleep. After this is completed, the listener will receive the ‘word’, and will go to sleep, since it will not 
 confirm the word sent by the speaker. Here is the layout of the second test case:
 
