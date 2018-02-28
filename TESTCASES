@@ -193,7 +193,7 @@ Case #2 Success!
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-The third test case, selfTest1() tests the alarm class against multiple threads to check whether they sleep and/or wake within 
+The third test case, selfTest3() tests the alarm class against multiple threads to check whether they sleep and/or wake within 
 expected parameters and are awoken in a correct order. It does this by checking if the time taken for the threads to wake is 
 within expected parameter given that the machine calls timerInterrupt around every ~500 ticks and by ensuring all threads are 
 awoken in correct order based on their wake time.
