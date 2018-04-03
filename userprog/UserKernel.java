@@ -1,5 +1,6 @@
 package nachos.userprog;
 
+import java.util.LinkedList;
 import nachos.machine.*;
 import nachos.threads.*;
 import nachos.userprog.*;
@@ -8,6 +9,14 @@ import nachos.userprog.*;
  * A kernel that can support multiple user processes.
  */
 public class UserKernel extends ThreadedKernel {
+	
+	
+	private static Lock pageLock;
+	int offsetLength;
+	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
+	static LinkedList<Integer> frameTable = new LinkedList<Integer>();
+	static LinkedList<Integer> availablePages = new LinkedList<Integer>();
+	
     /**
      * Allocate a new user kernel.
      */
@@ -25,8 +34,11 @@ public class UserKernel extends ThreadedKernel {
 	console = new SynchConsole(Machine.console());
 	
 	Machine.processor().setExceptionHandler(new Runnable() {
-		public void run() { exceptionHandler(); }
+		public void run() { 
+			exceptionHandler(); 
+			}
 	    });
+    
     }
 
     /**
@@ -107,6 +119,38 @@ public class UserKernel extends ThreadedKernel {
 	super.terminate();
     }
 
+    public static int getVirtualPageNumber(int vaddr) {
+        return Machine.processor().pageFromAddress(vaddr);
+ }
+    
+    public static int newPage() {
+    	int newPage=-1;
+    	
+    	pageLock.acquire();
+    	
+    	if(frameTable.size()>0) {
+    		newPage=frameTable.removeFirst().intValue();
+    	}
+    	pageLock.release();
+    
+    		return newPage;
+    }
+
+    
+    public static boolean deletePage(int ppn) {
+    	boolean deleted=false;
+
+    	pageLock.acquire();
+    	
+    	if(ppn == getVirtualPageNumber(ppn))
+    	frameTable.add(new Integer(ppn));
+    	deleted=true;
+    	pageLock.release();
+    
+    	
+    	return deleted;
+    }    
+    
     /** Globally accessible reference to the synchronized console. */
     public static SynchConsole console;
 
