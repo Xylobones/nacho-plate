@@ -5,6 +5,8 @@ import nachos.threads.*;
 import nachos.userprog.*;
 
 import java.io.EOFException;
+import java.util.LinkedList;
+import java.util.HashSet;
 
 /**
  * Encapsulates the state of a user process that is not contained in its
@@ -339,14 +341,107 @@ public class UserProcess {
      * Handle the halt() system call. 
      */
     private int handleHalt() {
-
+	if(this != UserKernel.root)
+		return -1;
 	Machine.halt();
 	
 	Lib.assertNotReached("Machine.halt() did not halt machine!");
 	return 0;
     }
-
-
+	
+	private int handleCreate(int name) {
+		String fileName = readVirtualMemoryString(name, 256);
+		if(fileName == null || deletedFiles.contains(fileName))
+			return -1;
+		OpenFile file = UserKernel.fileSystem.open(fileName, true);
+		if(file == null)
+			return -1;
+		for(int i = 0; i < Descriptors.length; i++){
+			if(Descriptors[i] == null){
+				Descriptors[i] = file;
+				openedFiles.add(fileName);
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private int handleOpen(int name) {
+		String fileName = readVirtualMemoryString(name, 256);
+		if(fileName == null || deletedFiles.contains(fileName))
+			return -1;
+		OpenFile file = UserKernel.fileSystem.open(fileName, false);
+		if(file == null)
+			return -1;
+		for(int i = 0; i < Descriptors.length; i++){
+			if(Descriptors[i] == null){
+				Descriptors[i] = file;
+				openedFiles.add(fileName);
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private int handleRead(int fileDescriptor, int buffer, int count){
+		OpenFile file = Descriptors[fileDescriptor];
+		if(file == null) 
+			return -1;
+		if(buffer <= 0 || count <= 0)
+			return -1;
+		
+		byte buffer2[] = new byte[count];
+		
+		int size = file.read(buffer2, 0, count);
+		
+		if(size == -1) return -1;
+		
+		writeVirtualMemory(buffer, buffer2);
+		return size;
+	}
+	
+	private int handleWrite(int fileDescriptor, int buffer, int count){
+		OpenFile file = Descriptors[fileDescriptor];
+		if(file == null) return -1;
+		if(buffer <= 0 || count <= 0) return -1;
+		
+		byte buffer2[] = new byte[count];
+		int size = readVirtualMemory(buffer, buffer2, 0, count);
+		if(size == -1) return -1;
+		size = file.write(buffer2, 0, count);
+		return size;
+	}
+	
+	private int handleClose(int fileDescriptor){
+		OpenFile file = Descriptors[fileDescriptor];
+		if(file != null){
+			file.close();
+			Descriptors[fileDescriptor] = null;
+			String fileName = file.getName();
+			openedFiles.remove(fileName);
+			if(!openedFiles.contains(fileName)){
+				if(deletedFiles.contains(fileName)){
+					deletedFiles.remove(fileName);
+					UserKernel.fileSystem.remove(fileName);
+				}
+			}
+			return 0;
+		}
+		return -1;
+	}
+	
+	private int handleUnlink(int name){
+		String fileName = readVirtualMemoryString(name, 256);
+		if(fileName == null) return -1;
+		
+		if(openedFiles.contains(fileName))
+			deletedFiles.add(fileName);
+		else
+			if(UserKernel.fileSystem.remove(fileName))
+				return 0;
+		return -1;
+	}
+	
     private static final int
         syscallHalt = 0,
 	syscallExit = 1,
@@ -391,7 +486,18 @@ public class UserProcess {
 	switch (syscall) {
 	case syscallHalt:
 	    return handleHalt();
-
+	case syscallCreate:
+		return handleCreate(a0);
+	case syscallOpen:
+		return handleOpen(a0);
+	case syscallRead:
+		return handleRead(a0, a1, a2);
+	case syscallWrite:
+		return handleWrite(a0, a1, a2);
+	case syscallClose:
+		return handleClose(a0);
+	case syscallUnlink:
+		return handleUnlink(a0);
 
 	default:
 	    Lib.debug(dbgProcess, "Unknown syscall " + syscall);
@@ -441,6 +547,10 @@ public class UserProcess {
     /** The number of pages in the program's stack. */
     protected final int stackPages = 8;
     
+    protected OpenFile[] Descriptors;
+    protected static LinkedList<String> openedFiles = new LinkedList<String>();
+    protected static HashSet<String> deletedFiles = new HashSet<String>();
+	
     private int initialPC, initialSP;
     private int argc, argv;
 	
