@@ -25,6 +25,7 @@ public class UserProcess {
      * Allocate a new process.
      */
     public UserProcess() {
+	Descriptors = new OpenFile[16];
 	int numPhysPages = Machine.processor().getNumPhysPages();
 	pageTable = new TranslationEntry[numPhysPages];
 	for (int i=0; i<numPhysPages; i++)
