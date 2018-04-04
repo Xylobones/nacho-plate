@@ -26,6 +26,8 @@ public class UserProcess {
      */
     public UserProcess() {
 	Descriptors = new OpenFile[16];
+	Descriptors[0] = UserKernel.console.openForReading();
+	Descriptors[1] = UserKernel.console.openForWriting();
 	int numPhysPages = Machine.processor().getNumPhysPages();
 	pageTable = new TranslationEntry[numPhysPages];
 	for (int i=0; i<numPhysPages; i++)
