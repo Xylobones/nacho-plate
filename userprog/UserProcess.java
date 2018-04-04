@@ -32,6 +32,15 @@ public class UserProcess {
 	pageTable = new TranslationEntry[numPhysPages];
 	for (int i=0; i<numPhysPages; i++)
 	    pageTable[i] = new TranslationEntry(i,i, true,false,false,false);
+	    
+	processIDLock.acquire();
+   	processID = nextProcessID++;
+    	processIDLock.release();
+    
+    	parentProcess = null;
+        childrenProcess = new HashMap<Integer, UserProcess>();
+        exitStatus = new HashMap<Integer, Integer>();
+
     }
     
     /**
@@ -56,8 +65,13 @@ public class UserProcess {
     public boolean execute(String name, String[] args) {
 	if (!load(name, args))
 	    return false;
-	
-	new UThread(this).setName(name).fork();
+	    
+	uthread = new UThread(this);
+        uthread.setName(name).fork();
+
+    	numProcessLock.acquire();
+    	numProcess++;
+	numProcessLock.release();
 
 	return true;
     }
@@ -445,6 +459,113 @@ public class UserProcess {
 		return -1;
 	}
 	
+	private int handleExec(int fileName, int numArg, int argOffset){
+
+    		//check if valid filename.
+    		String name = readVirtualMemoryString(fileName, 256);
+   		 if (name == null){
+        		return -1;
+    		}
+
+		//check if coff file.
+   		 String[] arrName = name.split("\\.");
+   		 String coffCheck = arrName[arrName.length - 1];
+    		if (!coffCheck.toLowerCase().equals("coff")){
+        		return -1;
+   		 }
+
+    		//check if argument# is non-negative + correct length.
+	    	if (numArg < 0 || numArg != argOffset.length){
+        		return -1;
+    		}
+		
+		String[] param = new String[numArg];
+    		byte[] paramPointer = new byte[4];
+
+     		for(int i=0; i < numArg; i++ ){
+      		Int read = readVirtualMemory(argOffset + (i*4), paramPointer);
+
+      		//check pointers.
+       		if (read != 4){ return -1; }
+
+      		param[i]= readVirtualMemoryString((Lib.bytesToInt(paramPointer, 0)), 256);
+
+  		//check arguments.
+  		if (param[i] == null) { return -1; }	
+		}
+
+		UserProcess child = UserProcess.newUserProcess();
+    		if (child.execute(filename, param)) {
+        		childrenProcess.put(child.processID, child);
+        		child.parentProcess = this;
+        		return child.processID;
+    		}
+		else return -1;     
+		}
+	
+	private int handleJoin(int procID, int statusAddr){
+    
+    		//check for child.
+		UserProcess child = childrenProcess.get(procID);
+    		if (child == null) { return -1; }
+        
+    		child.uthread.join();
+        
+    		//orphan child.
+    		childrenProcess.remove(child.processID);
+		child.parentProcess = null;
+
+		//acquire exit status.
+		exitLock.acquire();
+		Integer exitStat = exitStatus.get(child.processID);
+		exitLock.release();
+
+		//check childs status to see what to return.
+		If (exitStat != null) {
+    			byte[] stat = Lib.bytesFromInt(exitStat);
+    			Int byteNum = writeVirtualMemory(statusAddr, stat);
+
+    			//check status & exit is good.
+    			If (byteNum == 4 && exitSucess = true) return 1; 
+    			else return 0;
+			}
+		else return 0;
+		}
+
+	private int handleExit(int status){
+		//acquire exit status for parent.
+    		if (parentProcess != null) {
+		exitLock.acquire();    
+		parentProcess.exitStatus.put(processID, status);
+		exitLock.release();
+		}
+		exitSuccess = true; //normal exit, not unhandled exception.
+
+		//clean up before exit.
+		unloadSections();
+    		for(int i = 0; i < Descriptors.length(); i++) {
+        		if(Descriptors[i] != null)
+            			Descriptors[i] = null;
+    		}
+   		 //orphan the children.
+        	Iterator<UserProcess> itr = childrenProcess.values().iterator()
+        	while (itr.hasNext()) {
+            		itr.next().parentProcess = null;
+        	}
+    		childrenProcess.clear();
+		//coff.close(); //Not sure if this works.
+
+	    	numProcessLock.acquire();
+    		numProcess--; //decrement process#.    
+		numProcessLock.release();
+    
+		//check if root then finish/terminate or halt if root.
+		if (numProcesses == 0)
+			Kernel.kernel.terminate(); //Machine halt
+		else
+    			KThread.currentThread().finish();
+	}
+	
     private static final int
         syscallHalt = 0,
 	syscallExit = 1,
@@ -501,6 +622,12 @@ public class UserProcess {
 		return handleClose(a0);
 	case syscallUnlink:
 		return handleUnlink(a0);
+	case syscallExit:
+		return handleExit(a0);
+	case syscallExec:
+		return handleExec(a0, a1, a2);
+	case syscallJoin:
+		return handleJoin(a0, a1);
 
 	default:
 	    Lib.debug(dbgProcess, "Unknown syscall " + syscall);
@@ -559,4 +686,18 @@ public class UserProcess {
 	
     private static final int pageSize = Processor.pageSize;
     private static final char dbgProcess = 'a';
+	
+    //Part 3 New Variables
+    private UThread uthread;
+    private int processID;
+    private static int nextProcessID = 0;
+    private HashMap<Integer, UserProcess> childProcess;
+    private UserProcess parentProcess;
+    private HashMap<Integer, Integer> exitStatus;
+    protected boolean exitSucess = false;
+    private static Lock processIDLock = new Lock();
+    private static Lock exitLock = new Lock();
+    private static Lock numProcessLock = new Lock();
+    private static int numProcess = 0;
+
 }
