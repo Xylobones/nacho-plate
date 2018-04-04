@@ -8,6 +8,9 @@ import java.io.EOFException;
 import java.util.LinkedList;
 import java.util.HashSet;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 /**
  * Encapsulates the state of a user process that is not contained in its
  * user thread (or threads). This includes its address translation state, a
