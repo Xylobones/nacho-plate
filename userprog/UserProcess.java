@@ -478,7 +478,7 @@ public class UserProcess {
    		 }
 
     		//check if argument# is non-negative + correct length.
-	    	if (numArg < 0 || numArg != argOffset.length()){
+	    	if (numArg < 0){
         		return -1;
     		}
 		
@@ -567,6 +567,8 @@ public class UserProcess {
 			Kernel.kernel.terminate(); //Machine halt
 		else
     			KThread.currentThread().finish();
+		
+		return -1; //This should never happen.
 	}
 	
     private static final int
