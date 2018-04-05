@@ -11,9 +11,8 @@ int main(){
 	int procID, result;
 
 	procID = exec(proc*, argNum, paraArr**);
-	int *stat = exitStatus.get(procID);
 
-	result = join(procID, *stat); //message should print.
+	result = join(procID, 2); //message should print.
 	
 	//Make Sure Join Waited.
 	if (result = 1){
