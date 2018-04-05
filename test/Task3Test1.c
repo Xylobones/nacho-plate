@@ -8,62 +8,62 @@ int main(){
 	int goodLength = 2;
 	int negLength = -42;
 	int badLength = 3;
-	char *gdArr[2] = {“Hello“, “1“};
-	char *bdPtrArr[2] = {“112“, “bob“};
+	char *gdArr[2] = {"Hello", "1"};
+	char *bdPtrArr[2] = {"112", "bob"};
 	char *bdArr[2];
-	char *procNull = “testNull.coff“;
-	char *procNcoff = “testNcuff“;
-	char *proc = “proc1.coff“;
+	char *procNull = "testNull.coff";
+	char *procNcoff = "testNcuff";
+	char *proc = "proc1.coff";
 	char **goodArr = gdArr; //Array with valid parameters.
 	char **badArr = bdArr; //Array with pointers referencing null parameters.
 	char **badPtrArr = bdPtrArr;
 
 	//test exec with null file.
 	result = exec(procNull, goodLength, goodArr);
-	If (result = -1){
-		printf(“Return value for a null process is correct.\n“); 
+	if (result = -1){
+		printf("Return value for a null process is correct.\n"); 
 	} else {
-		printf(“Return value for a null process is incorrect.\n“);
+		printf("Return value for a null process is incorrect.\n");
 	}
 
 	//test exec with non .coff file.
 	result = exec(procNcoff, goodLength, goodArr);
-	If (result = -1){
-		printf(“Return value for a non .coff file is correct.\n“); 
+	if (result = -1){
+		printf("Return value for a non .coff file is correct.\n"); 
 	} else {
-		printf(“Return value for a non .coff file is incorrect.\n“);
+		printf("Return value for a non .coff file is incorrect.\n");
 	}
 
 	//test exec with negative number of parameters.
 	result = exec(proc, negLength, goodArr);
-	If (result = -1){
-		printf(“Return value for a negative # of parameters is correct.\n“); 
+	if (result = -1){
+		printf("Return value for a negative # of parameters is correct.\n"); 
 	} else {
-		printf(“Return value for a negative # of parameters is incorrect.\n“);
+		printf("Return value for a negative # of parameters is incorrect.\n");
 	}
 
 	//test exec with invalid number of parameters.
 	result = exec(proc, badLength, goodArr);
-	If (result = -1){
-		printf(“Return value for an invalid # of parameters is correct.\n“); 
+	if (result = -1){
+		printf("Return value for an invalid # of parameters is correct.\n"); 
 	} else {
-		printf(“Return value for an invalid # of parameters is incorrect.\n“);
+		printf("Return value for an invalid # of parameters is incorrect.\n");
 	}
 
 	//test exec with bad array of pointers to parameters.
 	result = exec(proc, goodLength, badArr);
-	If (result = -1){
-		printf(“Return value for a bad array of pointers is correct.\n“); 
+	if (result = -1){
+		printf("Return value for a bad array of pointers is correct.\n"); 
 	} else {
-		printf(“Return value for a bad array of pointers is incorrect.\n“);
+		printf("Return value for a bad array of pointers is incorrect.\n");
 	}
 
 	//test exec with array of pointers referencing null parameters.
 	result = exec(proc, goodLength, badPtrArr);
-	If (result = -1){
-		printf(“Return value for an array of pointers with bad parameters is correct.\n“); 
+	if (result = -1){
+		printf("Return value for an array of pointers with bad parameters is correct.\n"); 
 	} else {
-		printf(“Return value for an array of pointers with bad parameters is incorrect.\n“);
+		printf("Return value for an array of pointers with bad parameters is incorrect.\n");
 	}
 
 	return 0;

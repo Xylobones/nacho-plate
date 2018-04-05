@@ -5,8 +5,8 @@
 int main(){
 
 	int argNum = 2;
-	char *arr[2] = {“Hello“, “1“};
-	char *proc = “proc2.coff“;
+	char *arr[2] = {"Hello", "1"};
+	char *proc = "proc2.coff";
 	char **paraArr = arr; //Array with valid parameters.
 	int procID, result;
 
@@ -17,11 +17,11 @@ int main(){
 	
 	//Make Sure Join Waited.
 	if (result = 1){
-		printf(“Join was successful and waited appropriately.“);
+		printf("Join was successful and waited appropriately.");
 	} else if (result = 0){
-		printf(“Error with the exit status.“);
+		printf("Error with the exit status.");
 	} else {
-		printf(“Something went terribly wrong with the join.“);
+		printf("Something went terribly wrong with the join.");
 	}
 	
 }
