@@ -498,7 +498,7 @@ public class UserProcess {
 		}
 
 		UserProcess child = UserProcess.newUserProcess();
-    		if (child.execute(fileName, param)) {
+    		if (child.execute(name, param)) {
         		childrenProcess.put(child.processID, child);
         		child.parentProcess = this;
         		return child.processID;
@@ -529,7 +529,7 @@ public class UserProcess {
     			int byteNum = writeVirtualMemory(statusAddr, stat);
 
     			//check status & exit is good.
-    			if (byteNum == 4 && exitSucess = true) return 1; 
+    			if (byteNum == 4 && exitSucess == true) return 1; 
     			else return 0;
 			}
 		else return 0;
