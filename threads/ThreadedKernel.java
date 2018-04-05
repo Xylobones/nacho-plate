@@ -47,7 +47,7 @@ public class ThreadedKernel extends Kernel {
      * tests here.
      */	
     public void selfTest() {
-    	KThread.selfTest();
+    	/*KThread.selfTest();
     	KThread.selfTest1();
     	KThread.selfTest2();
     	KThread.selfTest3();
@@ -73,7 +73,7 @@ public class ThreadedKernel extends Kernel {
     	SynchList.selfTest();
 	if (Machine.bank() != null) {
 	    ElevatorBank.selfTest();
-	}
+	}*/
     }
     
     /**
