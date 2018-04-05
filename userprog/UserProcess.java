@@ -466,7 +466,7 @@ public class UserProcess {
 
     		//check if valid filename.
     		String name = readVirtualMemoryString(fileName, 256);
-   		 if (name == null){
+   		if (name == null){
         		return -1;
     		}
 
@@ -478,7 +478,7 @@ public class UserProcess {
    		 }
 
     		//check if argument# is non-negative + correct length.
-	    	if (numArg < 0 || numArg != argOffset.length){
+	    	if (numArg < 0 || numArg != argOffset.length()){
         		return -1;
     		}
 		
@@ -486,7 +486,7 @@ public class UserProcess {
     		byte[] paramPointer = new byte[4];
 
      		for(int i=0; i < numArg; i++ ){
-      		Int read = readVirtualMemory(argOffset + (i*4), paramPointer);
+      		int read = readVirtualMemory(argOffset + (i*4), paramPointer);
 
       		//check pointers.
        		if (read != 4){ return -1; }
@@ -498,7 +498,7 @@ public class UserProcess {
 		}
 
 		UserProcess child = UserProcess.newUserProcess();
-    		if (child.execute(filename, param)) {
+    		if (child.execute(fileName, param)) {
         		childrenProcess.put(child.processID, child);
         		child.parentProcess = this;
         		return child.processID;
@@ -524,12 +524,12 @@ public class UserProcess {
 		exitLock.release();
 
 		//check childs status to see what to return.
-		If (exitStat != null) {
+		if (exitStat != null) {
     			byte[] stat = Lib.bytesFromInt(exitStat);
-    			Int byteNum = writeVirtualMemory(statusAddr, stat);
+    			int byteNum = writeVirtualMemory(statusAddr, stat);
 
     			//check status & exit is good.
-    			If (byteNum == 4 && exitSucess = true) return 1; 
+    			if (byteNum == 4 && exitSucess = true) return 1; 
     			else return 0;
 			}
 		else return 0;
@@ -546,12 +546,12 @@ public class UserProcess {
 
 		//clean up before exit.
 		unloadSections();
-    		for(int i = 0; i < Descriptors.length(); i++) {
+    		for(int i = 0; i < 16; i++) {
         		if(Descriptors[i] != null)
             			Descriptors[i] = null;
     		}
    		 //orphan the children.
-        	Iterator<UserProcess> itr = childrenProcess.values().iterator()
+        	Iterator<UserProcess> itr = childrenProcess.values().iterator();
         	while (itr.hasNext()) {
             		itr.next().parentProcess = null;
         	}
@@ -563,7 +563,7 @@ public class UserProcess {
 		numProcessLock.release();
     
 		//check if root then finish/terminate or halt if root.
-		if (numProcesses == 0)
+		if (numProcess == 0)
 			Kernel.kernel.terminate(); //Machine halt
 		else
     			KThread.currentThread().finish();
@@ -694,10 +694,10 @@ public class UserProcess {
     private UThread uthread;
     private int processID;
     private static int nextProcessID = 0;
-    private HashMap<Integer, UserProcess> childProcess;
+    private HashMap<Integer, UserProcess> childrenProcess;
     private UserProcess parentProcess;
     private HashMap<Integer, Integer> exitStatus;
-    protected boolean exitSucess = false;
+    protected boolean exitSuccess = false;
     private static Lock processIDLock = new Lock();
     private static Lock exitLock = new Lock();
     private static Lock numProcessLock = new Lock();
