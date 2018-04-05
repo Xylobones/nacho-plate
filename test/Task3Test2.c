@@ -16,9 +16,9 @@ int main(){
 		print("%d :Exec was unsuccessful.\n", procID);
 	}
 
-	int *stat = exitStatus.get(procID); //pointer to exit status 
+	//int *stat = exitStatus.get(procID); //pointer to exit status 
 	//test exec with other methods. (exit is called by proc)
-	result = join(procID, *stat);
+	result = join(procID, 1);
 
 	if (result = 1)
 		printF("All went well for proc.\n");
