@@ -10,7 +10,7 @@ import nachos.userprog.*;
  */
 public class UserKernel extends ThreadedKernel {
 	
-	
+		// Data fields
 	private static Lock pageLock;
 	int offsetLength;
 	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
@@ -35,15 +35,12 @@ public class UserKernel extends ThreadedKernel {
 	
 	Machine.processor().setExceptionHandler(new Runnable() {
 		public void run() { exceptionHandler(); } });
-    
-	
-	
+   
 	int numPPages = Machine.processor().getNumPhysPages();
 	frameTable = new LinkedList<Integer>(); 
 	for(int i = 0; i < numPPages; i++){
 		frameTable.add(new Integer(i));
 		}
-
     }
 
     /**
@@ -129,6 +126,10 @@ public class UserKernel extends ThreadedKernel {
         return Machine.processor().pageFromAddress(vaddr);
  }
     
+    /**
+     * Will add a new Page
+     * @return 	The new page.
+     */
     public static int newPage() {
     	int newPage=-1;
     	
@@ -143,6 +144,12 @@ public class UserKernel extends ThreadedKernel {
     }
 
     
+    /**
+     * This method will delete a requested Page with the PPN.
+     * @param ppn	Physical Page Number variable that is currently
+     * 				wanting to be deleted
+     * @return		true that the page is deleted if existent. If not false.
+     */
     public static boolean deletePage(int ppn) {
     	boolean deleted=false;
 
