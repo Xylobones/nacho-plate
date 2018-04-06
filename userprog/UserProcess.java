@@ -97,7 +97,7 @@ public class UserProcess {
     }
     
     /**
-     * This method allocates the desired number of physical pages for the program’s memory 
+     * This method allocates the desired number of physical pages for the programâ€™s memory 
      * one at a time after checking that the desired pages can fit.
      *
      * @param vpn			Virtual Page Number
@@ -634,6 +634,22 @@ public class UserProcess {
 		      Processor.exceptionNames[cause]);
 	    Lib.assertNotReached("Unexpected exception");
 	}
+    }
+	
+	public void selfTest1() {    	
+    	
+    }
+    
+   	public void selfTest2() {
+    	
+    }  
+    
+  	 public void selfTest3() {
+  	
+    }
+	
+	 public void selfTest3() {
+  	
     }
 
     /** The program being run by this process. */
