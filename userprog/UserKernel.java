@@ -43,6 +43,7 @@ public class UserKernel extends ThreadedKernel {
 		}
     }
 
+
     /**
      * Test the console device.
      */	
