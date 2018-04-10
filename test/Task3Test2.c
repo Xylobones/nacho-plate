@@ -15,8 +15,7 @@ int main(){
 	if (procID != this.processID + 1){
 		print("%d :Exec was unsuccessful.\n", procID);
 	}
-
-	//int *stat = exitStatus.get(procID); //pointer to exit status 
+	
 	//test exec with other methods. (exit is called by proc)
 	result = join(procID, 1);
 
