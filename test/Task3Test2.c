@@ -15,7 +15,7 @@ int main(){
 	//test exec, I assume the ID should be 2, given this is the root.
 	procID = exec(*proc, argNum, **paraArr);
 	if (procID != 2){
-		print("%d :Exec was unsuccessful.\n", procID);
+		printf("%d :Exec was unsuccessful.\n", procID);
 	}
 	
 	//test exec with other methods. (exit is called by proc)
