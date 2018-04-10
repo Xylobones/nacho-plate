@@ -12,7 +12,7 @@ int main(char[] str, int num){
 
 	//create child
 	procID = exec(*proc, argNum, **paraArr);
-	
+	printf(“ProcessID = %d\n“, procID);
 	printf(str);
 	printf(“ every %d\n“, num);
 	for (int i = 3; i--; i > 0){
