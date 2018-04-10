@@ -11,7 +11,7 @@ import nachos.userprog.*;
 public class UserKernel extends ThreadedKernel {
 	
 		// Data fields
-	private static Lock pageLock;
+	private static Lock pageLock = new Lock();
 	int offsetLength;
 	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
 	static LinkedList<Integer> frameTable;
@@ -156,10 +156,13 @@ public class UserKernel extends ThreadedKernel {
 
     	pageLock.acquire();
     	
-    	if(ppn == getVirtualPageNumber(ppn))
-    		frameTable.add(new Integer(ppn));
+    	if(ppn >= 0 && ppn < Machine.processor().getNumPhysPages())
+    	{
+    		Integer pageNum = new Integer(ppn);
+    		frameTable.add(new pageNum);
     		deleted=true;
-    		pageLock.release();
+    	}
+    	pageLock.release();
     	
     	return deleted;
     }    
