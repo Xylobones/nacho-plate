@@ -18,7 +18,7 @@ int main(){
 	char **badArr = bdArr; //Array with pointers referencing null parameters.
 	char **badPtrArr = bdPtrArr;
 	
-	printf("Begin TestCase #1.\n"); 
+	printf("Begin TestCase #1: \n"); 
 
 	//test exec with null file.
 	result = exec(procNull, goodLength, goodArr);
