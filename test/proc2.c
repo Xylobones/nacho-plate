@@ -5,7 +5,7 @@
 int main(char[] str, int num){
 	
 	int argNum = 2;
-	char *arr[2] = {"Hello", "1"};
+	char *arr[2] = {"Test Case2: Hello", "1"};
 	char *proc = "proc1.coff";
 	char **paraArr = arr; //Array with valid parameters.
 	int procID, result;
@@ -15,8 +15,5 @@ int main(char[] str, int num){
 	printf(“ProcessID = %d\n“, procID);
 	printf(str);
 	printf(“ every %d\n“, num);
-	for (int i = 3; i--; i > 0){
-		printf(“Test Case2: Wait 3 seconds: %d\n“, i);
-	}
 	exit(2);
 }
