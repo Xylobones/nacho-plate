@@ -9,6 +9,8 @@ int main(){
 	char *proc = "proc1.coff";
 	char **paraArr = arr; //Array with valid parameters.
 	int procID, result;
+	
+	printF("Begin TestCase #2: \n");
 
 	//test exec
 	procID = exec(*proc, argNum, **paraArr);
