@@ -3,10 +3,20 @@
 #include "stdlib.h"
 
 int main(char[] str, int num){
-	printf(“%d every“, str + num);
-	printf(“.\n“);
+	
+	int argNum = 2;
+	char *arr[2] = {"Hello", "1"};
+	char *proc = "proc1.coff";
+	char **paraArr = arr; //Array with valid parameters.
+	int procID, result;
+
+	//create child
+	procID = exec(*proc, argNum, **paraArr);
+	
+	printf(str);
+	printf(“ every %d\n“, num);
 	for (int i = 3; i--; i > 0){
-		printf(“Wait 3 seconds: %d\n“, i);
+		printf(“Test Case2: Wait 3 seconds: %d\n“, i);
 	}
 	exit(2);
 }
