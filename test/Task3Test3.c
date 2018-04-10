@@ -11,15 +11,12 @@ int main(){
 	char **paraArr = arr; //Array with valid parameters.
 	int procID, result;
 
-	//ProcessIDs, obtained via exec().
+	//ProcessIDs & Misc, obtained via exec().
 	int valChildID = exec(proc*, argNum, paraArr**);
-	int foreignID = exec(proc*, argNum, paraArr**); // gonna need to do this elswhere.
 	int nullID = 12004;
-
-	//exitStatuses, obtained via exit().
-	//int* valChildPtr = exitStatus.get(valChildID);
 	int* invalChildPtr = 3;
-	//int* foreignPtr = foreigner.exitStatus.get(foreignID);
+	
+	printf("Begin TestCase #3: \n");
 
 	//test join with non-existent child.
 	result = join(nullID, 0);
@@ -39,7 +36,7 @@ int main(){
 	}
 	
 	//test join with a foreign process(join with a child of another process).
-	result = join(foreignID, 2);
+	result = join(3, 2);
 	If (result = -1){
 		printf("Return value for joining with a foreign child process is correct"); 
 	} else {
