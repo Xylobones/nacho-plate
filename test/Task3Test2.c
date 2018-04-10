@@ -12,7 +12,7 @@ int main(){
 	
 	printF("Begin TestCase #2: \n");
 
-	//test exec
+	//test exec, I assume the ID should be 2, given this is the root.
 	procID = exec(*proc, argNum, **paraArr);
 	if (procID != 2){
 		print("%d :Exec was unsuccessful.\n", procID);
