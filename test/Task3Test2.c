@@ -10,7 +10,7 @@ int main(){
 	char **paraArr = arr; //Array with valid parameters.
 	int procID, result;
 	
-	printF("Begin TestCase #2: \n");
+	printf("Begin TestCase #2: \n");
 
 	//test exec, I assume the ID should be 2, given this is the root.
 	procID = exec(*proc, argNum, **paraArr);
@@ -22,10 +22,10 @@ int main(){
 	result = join(procID, 1);
 
 	if (result = 1)
-		printF("All went well for proc.\n");
+		printf("All went well for proc.\n");
 	else if (result = 0)
-		printF("Error with the exit status.\n");
+		printf("Error with the exit status.\n");
 	else
-		printF("Something went terribly wrong.\n");
+		printf("Something went terribly wrong.\n");
 	
 }
