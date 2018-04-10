@@ -3,7 +3,8 @@
 #include "stdlib.h"
 
 int main(char[] str, int num){
-	printf(“%d every“, str + num);
-	printf(“.\n“);
+	printf(“Test Case #1: \n“);
+	printf(str);
+	printf(“every %d\n“ , num);
 	exit(1);
 	}
