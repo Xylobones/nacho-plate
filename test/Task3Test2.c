@@ -12,7 +12,7 @@ int main(){
 
 	//test exec
 	procID = exec(*proc, argNum, **paraArr);
-	if (procID != this.processID + 1){
+	if (procID != 2){
 		print("%d :Exec was unsuccessful.\n", procID);
 	}
 	
