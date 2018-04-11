@@ -106,30 +106,14 @@ public class UserProcess {
      * @return
      */
     protected boolean allocate(int vpn, int desiredPages, boolean readOnly) {
-    	
-    	LinkedList<TranslationEntry> allocate = new LinkedList<TranslationEntry>();
-    	
+    	if(desiredPages > UserKernel.frameTable.size())
+    		return false;
+    	if((vpn + desiredPages) >= pageTable.length) 
+    		return false;
     	for(int i = 0; i < desiredPages; i++) {
-    		if(vpn >= pageTable.length) 
-    			return false;
-    			
-      int ppn = UserKernel.newPage();
-      if (ppn == -1) {
-    	  Lib.debug(dbgProcess, "\tImpossible to allocate a new page!");
-      
-      for(TranslationEntry te: allocate) {
-    	pageTable[vpn + i]=new TranslationEntry(vpn+i, ppn, true, readOnly, false, false);
-    	UserKernel.deletePage(te.ppn);
-    	numPages--;
-      }
-      return false;
-    	}
-    	else {
-    		 TranslationEntry alloc2 = new TranslationEntry(vpn + i, ppn, true, readOnly, false, false);
-             allocate.add(alloc2);
-             pageTable[vpn + i] = alloc2;
-             ++numPages;
-    		}
+    		int ppn = UserKernel.newPage();
+    		pageTable[vpn+i] = new TranslationEntry(vpn+i, ppn, true, readOnly, false, false);
+    		numPages++;
     	}
     	return true;
     }
@@ -139,10 +123,12 @@ public class UserProcess {
      */
     protected void releaseResource(){
     	for(int i = 0; i < pageTable.length; i++) {
-    		if(pageTable[i].valid)
+    		if(pageTable[i].valid){
     			UserKernel.deletePage(pageTable[i].ppn);
     			pageTable[i] = new TranslationEntry(pageTable[i].vpn, 0, false, false, false, false);
+    		}
     	}
+    	numPages = 0;
     }
 
     /**
@@ -151,7 +137,7 @@ public class UserProcess {
      * @return		location of the VPN in the Page Table
      */
     protected TranslationEntry getVpnEntry(int vpn){
-    	if(pageTable != null || vpn <= 0)
+    	if(pageTable == null || vpn < 0 || vpn >= pageTable.length)
     		return null;
     	else
     		return pageTable[vpn];
@@ -236,10 +222,6 @@ public class UserProcess {
 
 	byte[] memory = Machine.processor().getMemory();
 	
-	// for now, just assume that virtual addresses equal physical addresses
-	// if (vaddr < 0 || vaddr >= memory.length)
-	// return 0;
-
 	if(vaddr < 0 || vaddr + (length - 1) > Processor.makeAddress(numPages-1, pageSize-1))
 			return 0;
 	
@@ -272,7 +254,7 @@ public class UserProcess {
 				vAddrOffset = vaddr - pgFirstVAddr;
 				amountToRead = pgLastVAddr - (vaddr + 1);
 			}
-			else {
+			else {//Entire page
 				vAddrOffset = 0;
 				amountToRead = pageSize;
 			}
@@ -316,10 +298,6 @@ public class UserProcess {
 
     	byte[] memory = Machine.processor().getMemory();
     	
-    	// for now, just assume that virtual addresses equal physical addresses
-    	// if (vaddr < 0 || vaddr >= memory.length)
-    	// return 0;
-
     	if(vaddr < 0 || vaddr + (length - 1) > Processor.makeAddress(numPages-1, pageSize-1))
     			return 0;
     		
@@ -330,33 +308,32 @@ public class UserProcess {
     		int lastVPage  = UserKernel.getVirtualPageNumber(lastVAddr);	
     		
     		for(int i = firstVPage; i <= lastVPage; i++) {
-    			if(!lookUpPageTable(i).valid) {
+    			if(!lookUpPageTable(i).valid || lookUpPageTable(i).readOnly) {
     				break;
     			}
     			int pgFirstVAddr = Machine.processor().makeAddress(i, 0);
     			int pgLastVAddr = Machine.processor().makeAddress(i, pageSize-1);
     			int vAddrOffset;
-    			int amountToRead = 0;
     			int amountToWrite = 0;
 
     			//Front of page
     			if(vaddr <= pgFirstVAddr && lastVPage < pgLastVAddr) {
     				vAddrOffset = 0;
-    				amountToRead = lastVAddr - (pgFirstVAddr + 1);
+    				amountToWrite = lastVAddr - (pgFirstVAddr + 1);
     			}
     			//Middle of page
     			else if(vaddr > pgFirstVAddr && lastVAddr < pgLastVAddr) {
     				vAddrOffset = vaddr - pgFirstVAddr;
-    				amountToRead = length;
+    				amountToWrite = length;
     			}
     			//End of page
     			else if(vaddr > pgFirstVAddr && lastVAddr >= pgLastVAddr) {
     				vAddrOffset = vaddr - pgFirstVAddr;
-    				amountToRead = pgLastVAddr - (vaddr + 1);
+    				amountToWrite = pgLastVAddr - (vaddr + 1);
     			}
-    			else {
+    			else{//Entire page
     				vAddrOffset = 0;
-    				amountToRead = pageSize;
+    				amountToWrite = pageSize;
     			}
     			int pAddr = Machine.processor().makeAddress(getVpnEntry(i).ppn, vAddrOffset);
     			System.arraycopy(data, (offset + writtenBytes), memory, pAddr, amountToWrite);
@@ -403,7 +380,6 @@ public class UserProcess {
 		Lib.debug(dbgProcess, "\tfragmented executable");
 		return false;
 	    }
-	   
 		if(!allocate(numPages, section.getLength(), section.isReadOnly())) {
 			releaseResource();
 			return false;
@@ -430,9 +406,9 @@ public class UserProcess {
 	// next comes the stack; stack pointer initially points to top of it
 	if(!allocate(numPages, stackPages, false)) {
 		releaseResource();
-		initialSP = numPages*pageSize;
 		return false;
 	}
+	initialSP = numPages*pageSize;
 	
 
 	// and finally reserve 1 page for arguments
@@ -455,8 +431,7 @@ public class UserProcess {
 	    byte[] stringOffsetBytes = Lib.bytesFromInt(stringOffset);
 	    Lib.assertTrue(writeVirtualMemory(entryOffset,stringOffsetBytes) == 4);
 	    entryOffset += 4;
-	    Lib.assertTrue(writeVirtualMemory(stringOffset, argv[i]) ==
-		       argv[i].length);
+	    Lib.assertTrue(writeVirtualMemory(stringOffset, argv[i]) == argv[i].length);
 	    stringOffset += argv[i].length;
 	    Lib.assertTrue(writeVirtualMemory(stringOffset,new byte[] { 0 }) == 1);
 	    stringOffset += 1;
@@ -497,7 +472,7 @@ public class UserProcess {
 	    	int vpn = section.getFirstVPN()+i;
 	    	TranslationEntry TE = getVpnEntry(vpn);
 	    	if (TE == null)
-	    	return false;
+	    		return false;
 	    	section.loadPage(i, TE.ppn);
 	    	}
 		}
@@ -516,7 +491,7 @@ public class UserProcess {
     			descriptors[i].close();
     			descriptors[i] = null;
     	}
-    coff.close();
+    	coff.close();
     }    
 
     /**
@@ -648,7 +623,7 @@ public class UserProcess {
   	
     }
 	
-	 public void selfTest3() {
+	 public void selfTest4() {
   	
     }
 
