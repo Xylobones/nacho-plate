@@ -5,6 +5,7 @@
 int main(){
 
 	int argNum = 2;
+	int errorStat = 2;
 	char *arr[2] = {"Hello", "1"};
 	char *proc = "proc2.coff";
 	char *proc2 = "Invalid.coff";
@@ -12,7 +13,7 @@ int main(){
 	int procID, result;
 
 	//ProcessIDs & Misc, obtained via exec().
-	int valChildID = exec(proc*, argNum, paraArr**);
+	int valChildID = exec(proc, argNum, paraArr);
 	int nullID = 12004;
 	int* invalChildPtr = 3;
 	
@@ -28,7 +29,7 @@ int main(){
 
 	//test join with same process twice.
 	join(valChildID, 2);
-	result = join(valChildID, 2);
+	result = join(valChildID, errorStat);
 	If (result = -1){
 		printf("Return value for joining the same process is correct"); 
 	} else {
@@ -36,7 +37,7 @@ int main(){
 	}
 	
 	//test join with a foreign process(join with a child of another process).
-	result = join(3, 2);
+	result = join(3, errorStat);
 	If (result = -1){
 		printf("Return value for joining with a foreign child process is correct"); 
 	} else {
