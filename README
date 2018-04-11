@@ -1,15 +1,15 @@
-Phase 1: Building a Thread System
+Phase 2: Multiprogramming
 Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, Sean Rochon
-COSC 3807 - Operating Systems I
+COSC 3407 - Operating Systems I
 Group 1
 
+--from before--
 To get the assignment to run, simply compile everything under the /nachos/ag, /nachos/machine, /nachos/security and /nachos/threads
 directory.
 It is recommended to run the program using the nachos shell script located in /nachos/bin/.
 Otherwise, you can run it with the command: "java nachos.machine.Machine $*".
+--until here--
 
-By default, ThreadedKernel.selfTest() will not call test cases that do not terminate. It will also only call the first Alarm test case;
-the nachos javadocs states not to run multiple alarms at once.
-These test cases are commented out in ThreadedKernel.selfTest().
-
-The ReactWater class was significantly changed from the design document due to the feedback we received on it.
+Task 2 does not have any testcases. As a result, there is nothing to prepare in order to run it properly. The code changes for this 
+task are in UserProcess.java and UserKernel.java. The changes are consistent with those described in the design document. 
+See that document for greater detail regarding precisely what's new.
