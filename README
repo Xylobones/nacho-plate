@@ -1,5 +1,5 @@
 Phase 2: Multiprogramming
-Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, and Sean Rochon
+Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, Sean Rochon
 COSC 3407 - Operating Systems I
 Group 1
 
@@ -17,9 +17,13 @@ See that document for greater detail regarding precisely what's new.
 
 Task III 
 For task 3, three new methods called handleExec, handleJoin and handleExit were added to userProcess with regards to the guidelines 
-asked for in the Phase 2 project requirements. To be specific, all methods were bulletproofed to the best of my ability and all
+asked for in the Phase 2 project requirements. To be specific all methods were bulletproofed to the best of my ability and all
 methods handle their respective system call (i.e. exit, join and exec). No noteworthy changes beyond the project requirments 
 were made to nachos in regards to task 3. For more details about task III see the design documentation detailing the project in
 more detail.
 Task 3 possess 5 test cases found in the test directory labeled Task3Test1-5 which utilises proc1-3 when testing the methods
-of task III. For more information see the TESTCASE readme found alongside this readme.
+of task III. For more information see the TESTCASE readme found alongside this readme. Note that urrently only testcase 1 
+functions properly, testcase 2-5 cannot execute properly, only ever returning -1 in the case of exec likely due to invalid 
+parameters being passed via the execute call(). All test cases should however give you the gist of what is being tested and 
+should compile and work through evidently i am not passing pointers over correctly.
+
