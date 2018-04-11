@@ -1,5 +1,5 @@
 Phase 2: Multiprogramming
-Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, Sean Rochon
+Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, and Sean Rochon
 COSC 3407 - Operating Systems I
 Group 1
 
@@ -16,8 +16,8 @@ task are in UserProcess.java and UserKernel.java. The changes are consistent wit
 See that document for greater detail regarding precisely what's new.
 
 Task III 
-For task 3, 3 new methods called handleExec, handleJoin and handleExit were added to userProcess with regards to the guidelines 
-asked for in the Phase 2 project requirements. To be specific all methods were bulletproofed to the best of my ability and all
+For task 3, three new methods called handleExec, handleJoin and handleExit were added to userProcess with regards to the guidelines 
+asked for in the Phase 2 project requirements. To be specific, all methods were bulletproofed to the best of my ability and all
 methods handle their respective system call (i.e. exit, join and exec). No noteworthy changes beyond the project requirments 
 were made to nachos in regards to task 3. For more details about task III see the design documentation detailing the project in
 more detail.
