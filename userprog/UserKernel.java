@@ -13,9 +13,7 @@ public class UserKernel extends ThreadedKernel {
 	
 	private static Lock pageLock;
 	int offsetLength;
-	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
-	static LinkedList<Integer> frameTable = new LinkedList<Integer>();
-	static LinkedList<Integer> availablePages = new LinkedList<Integer>();
+	static LinkedList<Integer> frameTable;
 	
     /**
      * Allocate a new user kernel.
@@ -38,7 +36,12 @@ public class UserKernel extends ThreadedKernel {
 			exceptionHandler(); 
 			}
 	    });
-    
+    	
+    	int numPPages = Machine.processor().getNumPhysPages();
+    	frameTable = new LinkedList<Integer>(); 
+    	for(int i = 0; i < numPPages; i++){
+    		frameTable.add(new Integer(i));
+    	}
     }
 
     /**
@@ -142,11 +145,13 @@ public class UserKernel extends ThreadedKernel {
 
     	pageLock.acquire();
     	
-    	if(ppn == getVirtualPageNumber(ppn))
-    	frameTable.add(new Integer(ppn));
-    	deleted=true;
+    	if(ppn >= 0 && ppn < Machine.processor().getNumPhysPages())
+    	{
+    		Integer pageNum = new Integer(ppn);
+    		frameTable.add(new pageNum);
+    		deleted=true;
+    	}
     	pageLock.release();
-    
     	
     	return deleted;
     }    
