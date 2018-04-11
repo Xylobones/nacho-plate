@@ -21,7 +21,7 @@ int main(){
 
 	//test join with non-existent child.
 	result = join(nullID, 0);
-	If (result = -1){
+	if (result = -1){
 		printf("Return value for joining a non existing process is correct"); 
 	} else {
 		printf("Return value for joining a non existing process is incorrect");
@@ -30,7 +30,7 @@ int main(){
 	//test join with same process twice.
 	join(valChildID, 2);
 	result = join(valChildID, errorStat);
-	If (result = -1){
+	if (result = -1){
 		printf("Return value for joining the same process is correct"); 
 	} else {
 		printf("Return value for joining the same process is incorrect");
@@ -38,7 +38,7 @@ int main(){
 	
 	//test join with a foreign process(join with a child of another process).
 	result = join(3, errorStat);
-	If (result = -1){
+	if (result = -1){
 		printf("Return value for joining with a foreign child process is correct"); 
 	} else {
 		printf("Return value for joining with a foreign child process is incorrect");
@@ -46,7 +46,7 @@ int main(){
 
 	//test join with a child possessing bad exit status 
 	result = join(valChildID, invalChildPtr);
-	If (result = 0){
+	if (result = 0){
 		printf("Return value for joining a process with a bad exit status is correct"); 
 	} else {
 		printf("Return value for joining a process with a bad exit status is incorrect"); 
