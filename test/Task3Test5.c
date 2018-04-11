@@ -11,7 +11,7 @@ int main(){
 	int procID, result;
 
 	//test a non-root user process
-	procID = exec(proc*, argNum, paraArr**);
+	procID = exec(*proc, argNum, **paraArr);
 	result = join(procID, 1);
 	if (result = 1){
 		printf("proc1 exited successfully with a good exit status.");

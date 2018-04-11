@@ -12,7 +12,7 @@ int main(){
 	
 	printf("Begin TestCase #4: \n");
 
-	procID = exec(proc*, argNum, paraArr**);
+	procID = exec(*proc, argNum, **paraArr);
 	result = join(procID, 3); //Message should print.
 	
 	//Make sure Join waited and was successful.
