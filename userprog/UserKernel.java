@@ -13,7 +13,6 @@ public class UserKernel extends ThreadedKernel {
 		// Data fields
 	private static Lock pageLock = new Lock();
 	int offsetLength;
-	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
 	static LinkedList<Integer> frameTable;
 	
     /**
