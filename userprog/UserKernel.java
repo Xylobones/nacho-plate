@@ -10,10 +10,12 @@ import nachos.userprog.*;
  */
 public class UserKernel extends ThreadedKernel {
 	
-		// Data fields
-	private static Lock pageLock = new Lock();
+	
+	private static Lock pageLock;
 	int offsetLength;
-	static LinkedList<Integer> frameTable;
+	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
+	static LinkedList<Integer> frameTable = new LinkedList<Integer>();
+	static LinkedList<Integer> availablePages = new LinkedList<Integer>();
 	
     /**
      * Allocate a new user kernel.
@@ -32,15 +34,12 @@ public class UserKernel extends ThreadedKernel {
 	console = new SynchConsole(Machine.console());
 	
 	Machine.processor().setExceptionHandler(new Runnable() {
-		public void run() { exceptionHandler(); } });
-   
-	int numPPages = Machine.processor().getNumPhysPages();
-	frameTable = new LinkedList<Integer>(); 
-	for(int i = 0; i < numPPages; i++){
-		frameTable.add(new Integer(i));
-		}
+		public void run() { 
+			exceptionHandler(); 
+			}
+	    });
+    
     }
-
 
     /**
      * Test the console device.
@@ -106,7 +105,6 @@ public class UserKernel extends ThreadedKernel {
 	super.run();
 
 	UserProcess process = UserProcess.newUserProcess();
-	
 	root = process;
 	String shellProgram = Machine.getShellProgramName();	
 	Lib.assertTrue(process.execute(shellProgram, new String[] { }));
@@ -125,10 +123,6 @@ public class UserKernel extends ThreadedKernel {
         return Machine.processor().pageFromAddress(vaddr);
  }
     
-    /**
-     * Will add a new Page
-     * @return 	The new page.
-     */
     public static int newPage() {
     	int newPage=-1;
     	
@@ -143,24 +137,16 @@ public class UserKernel extends ThreadedKernel {
     }
 
     
-    /**
-     * This method will delete a requested Page with the PPN.
-     * @param ppn	Physical Page Number variable that is currently
-     * 				wanting to be deleted
-     * @return		true that the page is deleted if existent. If not false.
-     */
     public static boolean deletePage(int ppn) {
     	boolean deleted=false;
 
     	pageLock.acquire();
     	
-    	if(ppn >= 0 && ppn < Machine.processor().getNumPhysPages())
-    	{
-    		Integer pageNum = new Integer(ppn);
-    		frameTable.add(new pageNum);
-    		deleted=true;
-    	}
+    	if(ppn == getVirtualPageNumber(ppn))
+    	frameTable.add(new Integer(ppn));
+    	deleted=true;
     	pageLock.release();
+    
     	
     	return deleted;
     }    
@@ -170,6 +156,6 @@ public class UserKernel extends ThreadedKernel {
 
     // dummy variables to make javac smarter
     private static Coff dummy1 = null;
-    
+	
     public static UserProcess root = null;
 }

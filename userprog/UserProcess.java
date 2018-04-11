@@ -533,7 +533,7 @@ public class UserProcess {
     			int byteNum = writeVirtualMemory(statusAddr, stat);
 
     			//check status & exit is good.
-    			if (byteNum == 4 && exitSuccess == true) return 1; 
+    			if (byteNum == 4 && exitSucess == true) return 1; 
     			else return 0;
 			}
 		else return 0;
