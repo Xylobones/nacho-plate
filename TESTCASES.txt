@@ -1,0 +1,57 @@
+TASK I - File System Calls
+Two different test programs are used to test task I: Task1Test1.c and Task1Test2.c.
+
+Task1Test1:
+This case assumes the existence of a file test.txt. This file contains the string "Test file". The goal is to try all of the basic functionality using this file, and displaying all of the return values. 
+
+Descriptor of newly-created test2.txt is: 2
+Return value of closing test2.txt is: 0
+Descriptor of re-opened test2.txt is: 2
+Descriptor of newly-opened test.txt is: 3
+Return value of reading test.txt is: 99
+Return value of writing to test2.txt is: 99. Printing write content:
+Test file                                                                                
+Return value of closing test.txt is: 0
+Return value of unlinking test.txt is: 0
+Return value of unlinking test2.txt is: -1
+Descriptor of re-opened test.txt is: -1
+Descriptor of re-opened test2.txt is: -1
+Return value of closing test2.txt is: 0
+Descriptor of re-opened test2.txt is: -1
+Descriptor of newly created test3.txt is: 2
+Return value of writing to test3.txt is: 99
+Machine halting!
+
+This shows that all of the basic functionality works as intended. At the end, there is a new file test3.txt.
+
+Task1Test2:
+This case test what happens if faulty input is used for all of the file system calls. It also checks that the system will fail gracefully while trying to open more than the allowed number of files. Negative return values are shown for all cases.
+
+Descriptor of newly-created file with NULL name is: -1
+Descriptor of opened file with NULL name is: -1
+Descriptor of opened file that does not exist is: -1
+Return value of reading file that does not exist is: -1
+Return value of reading file with count = 0 is: -1
+Return value of writing to file that does not exist is: -1
+Return value of writing to file with count = 0 is: -1
+Return value of closing file that does not exist is: -1
+Return value of unlinking file that does not exist is: -1
+Opening files until max is reached.
+File with descriptor 2 opened.
+File with descriptor 3 opened.
+File with descriptor 4 opened.
+File with descriptor 5 opened.
+File with descriptor 6 opened.
+File with descriptor 7 opened.
+File with descriptor 8 opened.
+File with descriptor 9 opened.
+File with descriptor 10 opened.
+File with descriptor 11 opened.
+File with descriptor 12 opened.
+File with descriptor 13 opened.
+File with descriptor 14 opened.
+File with descriptor 15 opened.
+File with descriptor -1 opened.
+Machine halting!
+
+Task3Test1:
