@@ -55,3 +55,13 @@ File with descriptor -1 opened.
 Machine halting!
 
 Task3Test1:
+The goal of this test case is to ensure that all system calls fail gracefully with bad input. The output below shows what happens when Task3Test1.c is run with Nachos.
+
+Begin TestCase #1:
+Return value for a null process is correct.
+Return value for a non .coff file is correct.
+Return value for a negative # of parameters is correct.
+Return value for an invalid # of parameters is correct.
+Return value for a bad array of pointers is correct.
+Return value for an array of pointers with bad parameters is correct.
+Machine halting!
