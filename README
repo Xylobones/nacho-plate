@@ -10,6 +10,16 @@ It is recommended to run the program using the nachos shell script located in /n
 Otherwise, you can run it with the command: "java nachos.machine.Machine $*".
 --until here--
 
+Task II
 Task 2 does not have any testcases. As a result, there is nothing to prepare in order to run it properly. The code changes for this 
 task are in UserProcess.java and UserKernel.java. The changes are consistent with those described in the design document. 
 See that document for greater detail regarding precisely what's new.
+
+Task III 
+For task 3, 3 new methods called handleExec, handleJoin and handleExit were added to userProcess with regards to the guidelines 
+asked for in the Phase 2 project requirements. To be specific all methods were bulletproofed to the best of my ability and all
+methods handle their respective system call (i.e. exit, join and exec). No noteworthy changes beyond the project requirments 
+were made to nachos in regards to task 3. For more details about task III see the design documentation detailing the project in
+more detail.
+Task 3 possess 5 test cases found in the test directory labeled Task3Test1-5 which utilises proc1-3 when testing the methods
+of task III. For more information see the TESTCASE readme found alongside this readme.
