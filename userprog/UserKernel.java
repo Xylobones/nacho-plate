@@ -15,7 +15,6 @@ public class UserKernel extends ThreadedKernel {
 	int offsetLength;
 	static LinkedList<Integer> memoryPage = new LinkedList<Integer>();
 	static LinkedList<Integer> frameTable;
-	static LinkedList<Integer> availablePages = new LinkedList<Integer>();
 	
     /**
      * Allocate a new user kernel.
