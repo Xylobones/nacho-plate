@@ -3,12 +3,13 @@ Daniel Bouffard, Mathieu Lefebvre, Eric Rheault, Sean Rochon
 COSC 3407 - Operating Systems I
 Group 1
 
---from before--
-To get the assignment to run, simply compile everything under the /nachos/ag, /nachos/machine, /nachos/security and /nachos/threads
-directory.
+To get the assignment to run, simply compile everything under the /nachos/ag, /nachos/machine, /nachos/security, /nachos/threads and /nachos/userprog/
+directory. To run the working testcases, compile Task1Test1.c, Task1Test2.c and Task3Test1.c in /nachos/test/.
 It is recommended to run the program using the nachos shell script located in /nachos/bin/.
 Otherwise, you can run it with the command: "java nachos.machine.Machine $*".
---until here--
+
+Task I
+Everything for Task 1 is implemented properly according to the design document. To run the testcases, run nachos -x Task1Test1.coff and Task1Test2.coff
 
 Task II
 Task 2 does not have any testcases. As a result, there is nothing to prepare in order to run it properly. The code changes for this 
