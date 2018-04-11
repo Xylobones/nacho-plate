@@ -39,6 +39,7 @@ public class UserKernel extends ThreadedKernel {
     	
     	int numPPages = Machine.processor().getNumPhysPages();
     	frameTable = new LinkedList<Integer>(); 
+	pageLock = new Lock();
     	for(int i = 0; i < numPPages; i++){
     		frameTable.add(new Integer(i));
     	}
